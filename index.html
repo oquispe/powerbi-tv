@@ -2,56 +2,126 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Power BI TV</title>
+<title>Indicadores de Costura</title>
 
 <style>
 html, body {
     margin: 0;
     padding: 0;
     height: 100%;
-    background: black;
+    background: #020617;
     overflow: hidden;
+    font-family: "Segoe UI", system-ui, sans-serif;
 }
 
-iframe {
+/* iframes */
+.iframe {
+    position: fixed;
+    inset: 0;
     width: 100%;
     height: 100%;
     border: none;
     opacity: 0;
     transition: opacity 1s ease-in-out;
+    z-index: 1;
 }
 
+.visible {
+    opacity: 1;
+    z-index: 2;
+}
+
+/* fondo animado */
+#bg {
+    position: fixed;
+    inset: 0;
+    background:
+      linear-gradient(120deg, #020617, #020617 40%, #0f172a),
+      radial-gradient(circle at 20% 20%, rgba(56,189,248,.15), transparent 40%),
+      radial-gradient(circle at 80% 80%, rgba(14,165,233,.2), transparent 40%);
+    animation: bgMove 10s ease-in-out infinite alternate;
+    z-index: 0;
+}
+
+@keyframes bgMove {
+    from { transform: scale(1); }
+    to   { transform: scale(1.1); }
+}
+
+/* overlay gerencial */
 #overlay {
     position: fixed;
     inset: 0;
-    background: linear-gradient(120deg, #000, #0f172a);
+    z-index: 5;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: Arial, sans-serif;
-    color: #00bcf2;
+    backdrop-filter: blur(6px);
+}
+
+#card {
+    padding: 80px 120px;
+    border-radius: 24px;
+    background: rgba(2,6,23,.7);
+    box-shadow:
+        0 0 60px rgba(56,189,248,.25),
+        inset 0 0 0 1px rgba(255,255,255,.08);
+    text-align: center;
+}
+
+#title {
     font-size: 3vw;
+    letter-spacing: 6px;
+    color: #e5f6ff;
+    margin-bottom: 20px;
+}
+
+#subtitle {
+    font-size: 1.3vw;
     letter-spacing: 4px;
-    z-index: 10;
+    color: #38bdf8;
+    margin-bottom: 40px;
 }
 
-.fadeIn {
-    animation: fadeZoom 3s ease-in-out forwards;
+/* loader */
+#loader {
+    width: 300px;
+    height: 6px;
+    background: rgba(255,255,255,.1);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: auto;
 }
 
-@keyframes fadeZoom {
-    0%   { opacity: 0; transform: scale(1.2); }
-    30%  { opacity: 1; transform: scale(1); }
-    70%  { opacity: 1; }
-    100% { opacity: 0; }
+#loader span {
+    display: block;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(90deg, #38bdf8, #0ea5e9);
+    animation: slide 2.5s ease-in-out infinite;
+}
+
+@keyframes slide {
+    from { transform: translateX(-100%); }
+    to   { transform: translateX(260%); }
 }
 </style>
 </head>
 
 <body>
 
-<div id="overlay">ACTUALIZANDO INDICADORES</div>
-<iframe id="pbiFrame"></iframe>
+<div id="bg"></div>
+
+<div id="overlay">
+    <div id="card">
+        <div id="title">INDICADORES DE COSTURA</div>
+        <div id="subtitle">ACTUALIZANDO INFORMACIÓN</div>
+        <div id="loader"><span></span></div>
+    </div>
+</div>
+
+<iframe id="frameA" class="iframe visible"></iframe>
+<iframe id="frameB" class="iframe"></iframe>
 
 <script>
 const links = [
@@ -59,32 +129,39 @@ const links = [
     "https://app.powerbi.com/view?r=eyJrIjoiMDEzNTdhNTUtOGU4ZS00MDVhLWEwMWItMGJhZTQxZDI4ZTg0IiwidCI6IjU0NmM0MjUzLTY3NTQtNGYwNC05OWRiLTY5MWMyMDQ2YjJlYyIsImMiOjR9"
 ];
 
-const frame = document.getElementById("pbiFrame");
-const overlay = document.getElementById("overlay");
 let index = 0;
+let activeFrame = "A";
+
+const frameA = document.getElementById("frameA");
+const frameB = document.getElementById("frameB");
+const overlay = document.getElementById("overlay");
+
+// carga inicial
+frameA.src = links[index];
+index++;
 
 function cambiarReporte() {
-    // Reinicia overlay
-    overlay.classList.remove("fadeIn");
-    void overlay.offsetWidth; // fuerza reflow
-    overlay.classList.add("fadeIn");
     overlay.style.display = "flex";
 
-    frame.style.opacity = "0";
-    frame.src = links[index];
-    index = (index + 1) % links.length;
+    const nextLink = links[index % links.length];
+    index++;
 
-    // Después de 3s mostramos el reporte
+    const incoming = activeFrame === "A" ? frameB : frameA;
+    const outgoing = activeFrame === "A" ? frameA : frameB;
+
+    incoming.src = nextLink;
+
+    // tiempo seguro para que Power BI cargue (TV friendly)
     setTimeout(() => {
+        incoming.classList.add("visible");
+        outgoing.classList.remove("visible");
+
         overlay.style.display = "none";
-        frame.style.opacity = "1";
-    }, 3000);
+        activeFrame = activeFrame === "A" ? "B" : "A";
+    }, 5000); // ⬅️ este valor es CLAVE (no lo bajes de 4s)
 }
 
-// Primera carga
-cambiarReporte();
-
-// Cambio cada 15s
+// rotación cada 15s
 setInterval(cambiarReporte, 50000);
 </script>
 
