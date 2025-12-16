@@ -31,7 +31,7 @@ html, body {
     z-index: 2;
 }
 
-/* fondo animado */
+/* fondo */
 #bg {
     position: fixed;
     inset: 0;
@@ -39,7 +39,7 @@ html, body {
       linear-gradient(120deg, #020617, #020617 40%, #0f172a),
       radial-gradient(circle at 20% 20%, rgba(56,189,248,.15), transparent 40%),
       radial-gradient(circle at 80% 80%, rgba(14,165,233,.2), transparent 40%);
-    animation: bgMove 10s ease-in-out infinite alternate;
+    animation: bgMove 12s ease-in-out infinite alternate;
     z-index: 0;
 }
 
@@ -48,7 +48,7 @@ html, body {
     to   { transform: scale(1.1); }
 }
 
-/* overlay gerencial */
+/* overlay */
 #overlay {
     position: fixed;
     inset: 0;
@@ -85,7 +85,7 @@ html, body {
 
 /* loader */
 #loader {
-    width: 300px;
+    width: 320px;
     height: 6px;
     background: rgba(255,255,255,.1);
     border-radius: 10px;
@@ -130,42 +130,50 @@ const links = [
 ];
 
 let index = 0;
-let activeFrame = "A";
+let active = "A";
 
 const frameA = document.getElementById("frameA");
 const frameB = document.getElementById("frameB");
 const overlay = document.getElementById("overlay");
 
-// carga inicial
+/* CARGA INICIAL */
 frameA.src = links[index];
 index++;
 
-function cambiarReporte() {
+/* PRELOAD REAL */
+function preloadNext() {
+    const nextLink = links[index % links.length];
+    const preloadFrame = active === "A" ? frameB : frameA;
+    preloadFrame.src = nextLink;
+}
+
+/* SWAP */
+function swapFrames() {
     overlay.style.display = "flex";
 
-    const nextLink = links[index % links.length];
-    index++;
+    const incoming = active === "A" ? frameB : frameA;
+    const outgoing = active === "A" ? frameA : frameB;
 
-    const incoming = activeFrame === "A" ? frameB : frameA;
-    const outgoing = activeFrame === "A" ? frameA : frameB;
-
-    incoming.src = nextLink;
-
-    // tiempo seguro para que Power BI cargue (TV friendly)
     setTimeout(() => {
         incoming.classList.add("visible");
         outgoing.classList.remove("visible");
-
         overlay.style.display = "none";
-        activeFrame = activeFrame === "A" ? "B" : "A";
-    }, 5000); // ⬅️ este valor es CLAVE (no lo bajes de 4s)
+        active = active === "A" ? "B" : "A";
+        index++;
+        preloadNext();
+    }, 6000); // ⬅️ TIEMPO SEGURO DE PRELOAD
 }
 
-// rotación cada 15s
-setInterval(cambiarReporte, 50000);
+// iniciar preload del segundo BI
+preloadNext();
+
+// rotación (50s)
+setInterval(swapFrames, 50000);
 </script>
 
 </body>
 </html>
+
+
 
 
