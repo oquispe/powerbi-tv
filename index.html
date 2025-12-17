@@ -14,24 +14,30 @@ html, body {
     font-family: "Segoe UI", system-ui, sans-serif;
 }
 
-/* iframes */
+/* =========================
+   IFRAMES (AJUSTE TV)
+   ========================= */
 .iframe {
     position: fixed;
-    inset: 0;
+    top: -2.5%;      /* ⬅️ ya NO se come el header */
+    left: 0;
     width: 100%;
-    height: 100%;
+    height: 105%;    /* ⬅️ sigue ocultando la barra inferior */
     border: none;
     opacity: 0;
     transition: opacity 1s ease-in-out;
     z-index: 1;
 }
 
+
 .visible {
     opacity: 1;
     z-index: 2;
 }
 
-/* fondo */
+/* =========================
+   FONDO ANIMADO
+   ========================= */
 #bg {
     position: fixed;
     inset: 0;
@@ -48,7 +54,9 @@ html, body {
     to   { transform: scale(1.1); }
 }
 
-/* overlay */
+/* =========================
+   OVERLAY
+   ========================= */
 #overlay {
     position: fixed;
     inset: 0;
@@ -83,7 +91,9 @@ html, body {
     margin-bottom: 40px;
 }
 
-/* loader */
+/* =========================
+   LOADER
+   ========================= */
 #loader {
     width: 320px;
     height: 6px;
@@ -161,7 +171,7 @@ function swapFrames() {
         active = active === "A" ? "B" : "A";
         index++;
         preloadNext();
-    }, 6000); // ⬅️ TIEMPO SEGURO DE PRELOAD
+    }, 6000); // preload seguro
 }
 
 // iniciar preload del segundo BI
@@ -173,7 +183,3 @@ setInterval(swapFrames, 50000);
 
 </body>
 </html>
-
-
-
-
