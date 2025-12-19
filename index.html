@@ -9,134 +9,151 @@ html, body {
     margin: 0;
     padding: 0;
     height: 100%;
-    background: #020617;
+    background: #ffffff;
     overflow: hidden;
     font-family: "Segoe UI", system-ui, sans-serif;
 }
 
 /* =========================
-   IFRAMES (AJUSTE TV)
+   IFRAMES (TV SAFE)
    ========================= */
 .iframe {
     position: fixed;
-    top: -2.5%;      /* ⬅️ ya NO se come el header */
+    top: -2.5%;
     left: 0;
     width: 100%;
-    height: 105%;    /* ⬅️ sigue ocultando la barra inferior */
+    height: 105%;
     border: none;
     opacity: 0;
-    transition: opacity 1s ease-in-out;
+    transition: opacity 1s ease;
     z-index: 1;
 }
-
-
 .visible {
     opacity: 1;
     z-index: 2;
 }
 
 /* =========================
-   FONDO ANIMADO
-   ========================= */
-#bg {
-    position: fixed;
-    inset: 0;
-    background:
-      linear-gradient(120deg, #020617, #020617 40%, #0f172a),
-      radial-gradient(circle at 20% 20%, rgba(56,189,248,.15), transparent 40%),
-      radial-gradient(circle at 80% 80%, rgba(14,165,233,.2), transparent 40%);
-    animation: bgMove 12s ease-in-out infinite alternate;
-    z-index: 0;
-}
-
-@keyframes bgMove {
-    from { transform: scale(1); }
-    to   { transform: scale(1.1); }
-}
-
-/* =========================
-   OVERLAY
+   OVERLAY LIMPIO
    ========================= */
 #overlay {
     position: fixed;
     inset: 0;
+    background: rgba(255,255,255,0.96);
     z-index: 5;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
-    backdrop-filter: blur(6px);
 }
 
+/* =========================
+   CARD CENTRAL
+   ========================= */
 #card {
-    padding: 80px 120px;
-    border-radius: 24px;
-    background: rgba(2,6,23,.7);
-    box-shadow:
-        0 0 60px rgba(56,189,248,.25),
-        inset 0 0 0 1px rgba(255,255,255,.08);
     text-align: center;
 }
 
 #title {
     font-size: 3vw;
-    letter-spacing: 6px;
-    color: #e5f6ff;
-    margin-bottom: 20px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: #0f172a;
+    margin-bottom: 10px;
 }
 
 #subtitle {
-    font-size: 1.3vw;
-    letter-spacing: 4px;
-    color: #38bdf8;
-    margin-bottom: 40px;
+    font-size: 1.2vw;
+    letter-spacing: 3px;
+    color: #475569;
+    margin-bottom: 50px;
 }
 
 /* =========================
-   LOADER
+   CARRUSEL EJECUTIVO 3D
    ========================= */
-#loader {
-    width: 320px;
-    height: 6px;
-    background: rgba(255,255,255,.1);
-    border-radius: 10px;
-    overflow: hidden;
+#carousel {
+    position: relative;
+    width: 900px;
+    height: 260px;
     margin: auto;
+    perspective: 1200px;
 }
 
-#loader span {
-    display: block;
-    width: 40%;
+.carousel-item {
+    position: absolute;
+    top: 0;
+    width: 260px;
+    height: 260px;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    transition: all 1.2s ease;
+    background: #fff;
+}
+
+.carousel-item img {
+    width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, #38bdf8, #0ea5e9);
-    animation: slide 2.5s ease-in-out infinite;
+    object-fit: cover;
 }
 
-@keyframes slide {
-    from { transform: translateX(-100%); }
-    to   { transform: translateX(260%); }
+/* POSICIONES */
+.left {
+    left: 0;
+    transform: scale(0.85);
+    opacity: 0.5;
+    z-index: 1;
+}
+
+.center {
+    left: 320px;
+    transform: scale(1);
+    opacity: 1;
+    z-index: 3;
+}
+
+.right {
+    left: 640px;
+    transform: scale(0.85);
+    opacity: 0.5;
+    z-index: 1;
 }
 </style>
 </head>
 
 <body>
 
-<div id="bg"></div>
-
+<!-- OVERLAY -->
 <div id="overlay">
     <div id="card">
         <div id="title">INDICADORES DE COSTURA</div>
         <div id="subtitle">ACTUALIZANDO INFORMACIÓN</div>
-        <div id="loader"><span></span></div>
+
+        <div id="carousel">
+            <div class="carousel-item left">
+                <img src="img/productividad.jpg">
+            </div>
+            <div class="carousel-item center">
+                <img src="img/trabajo en equipo.jpg">
+            </div>
+            <div class="carousel-item right">
+                <img src="img/calidad.jpg">
+            </div>
+        </div>
     </div>
 </div>
 
+<!-- IFRAMES -->
 <iframe id="frameA" class="iframe visible"></iframe>
 <iframe id="frameB" class="iframe"></iframe>
 
 <script>
+/* =========================
+   LINKS POWER BI
+   ========================= */
 const links = [
-    "https://app.powerbi.com/view?r=eyJrIjoiNjMyMDUwNWYtNWIzNS00ODRiLWE3NTAtOTRkZWY1MzFhMmJiIiwidCI6IjU0NmM0MjUzLTY3NTQtNGYwNC05OWRiLTY5MWMyMDQ2YjJlYyIsImMiOjR9",
-    "https://app.powerbi.com/view?r=eyJrIjoiMDEzNTdhNTUtOGU4ZS00MDVhLWEwMWItMGJhZTQxZDI4ZTg0IiwidCI6IjU0NmM0MjUzLTY3NTQtNGYwNC05OWRiLTY5MWMyMDQ2YjJlYyIsImMiOjR9"
+  "https://app.powerbi.com/view?r=eyJrIjoiNjMyMDUwNWYtNWIzNS00ODRiLWE3NTAtOTRkZWY1MzFhMmJiIiwidCI6IjU0NmM0MjUzLTY3NTQtNGYwNC05OWRiLTY5MWMyMDQ2YjJlYyIsImMiOjR9",
+  "https://app.powerbi.com/view?r=eyJrIjoiMDEzNTdhNTUtOGU4ZS00MDVhLWEwMWItMGJhZTQxZDI4ZTg0IiwidCI6IjU0NmM0MjUzLTY3NTQtNGYwNC05OWRiLTY5MWMyMDQ2YjJlYyIsImMiOjR9"
 ];
 
 let index = 0;
@@ -146,18 +163,41 @@ const frameA = document.getElementById("frameA");
 const frameB = document.getElementById("frameB");
 const overlay = document.getElementById("overlay");
 
-/* CARGA INICIAL */
-frameA.src = links[index];
-index++;
+/* =========================
+   CARRUSEL ROTACIÓN
+   ========================= */
+const items = document.querySelectorAll(".carousel-item");
 
-/* PRELOAD REAL */
-function preloadNext() {
-    const nextLink = links[index % links.length];
-    const preloadFrame = active === "A" ? frameB : frameA;
-    preloadFrame.src = nextLink;
+function rotateCarousel() {
+    items.forEach(item => {
+        if (item.classList.contains("left")) {
+            item.className = "carousel-item center";
+        } else if (item.classList.contains("center")) {
+            item.className = "carousel-item right";
+        } else {
+            item.className = "carousel-item left";
+        }
+    });
 }
 
-/* SWAP */
+/* =========================
+   CARGA INICIAL
+   ========================= */
+frameA.src = links[index++];
+setInterval(rotateCarousel, 2000);
+
+/* =========================
+   PRELOAD
+   ========================= */
+function preloadNext() {
+    const next = links[index % links.length];
+    const preloadFrame = active === "A" ? frameB : frameA;
+    preloadFrame.src = next;
+}
+
+/* =========================
+   SWAP SUAVE
+   ========================= */
 function swapFrames() {
     overlay.style.display = "flex";
 
@@ -171,13 +211,10 @@ function swapFrames() {
         active = active === "A" ? "B" : "A";
         index++;
         preloadNext();
-    }, 6000); // preload seguro
+    }, 5000);
 }
 
-// iniciar preload del segundo BI
 preloadNext();
-
-// rotación (50s)
 setInterval(swapFrames, 50000);
 </script>
 
