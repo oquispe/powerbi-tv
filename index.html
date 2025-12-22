@@ -15,7 +15,7 @@ html, body {
 }
 
 /* =========================
-   IFRAMES (TV SAFE)
+   IFRAMES
    ========================= */
 .iframe {
     position: fixed;
@@ -34,7 +34,7 @@ html, body {
 }
 
 /* =========================
-   OVERLAY LIMPIO
+   OVERLAY
    ========================= */
 #overlay {
     position: fixed;
@@ -55,40 +55,41 @@ html, body {
 
 #title {
     font-size: 3vw;
-    font-weight: 700;
-    letter-spacing: 4px;
+    font-weight: 900;
+    letter-spacing: 5px;
     color: #0f172a;
-    margin-bottom: 10px;
 }
 
 #subtitle {
     font-size: 1.2vw;
     letter-spacing: 3px;
     color: #475569;
-    margin-bottom: 50px;
+    margin: 20px 0 50px;
 }
 
 /* =========================
-   CARRUSEL EJECUTIVO 3D
+   CARRUSEL GERENCIAL
    ========================= */
 #carousel {
-    position: relative;
-    width: 900px;
+    width: 1200px;
     height: 260px;
+    overflow: hidden;
     margin: auto;
-    perspective: 1200px;
+}
+
+.carousel-track {
+    display: flex;
+    gap: 24px;
+    animation: scroll 18s linear infinite;
 }
 
 .carousel-item {
-    position: absolute;
-    top: 0;
-    width: 260px;
-    height: 260px;
+    min-width: 220px;
+    height: 240px;
     border-radius: 18px;
     overflow: hidden;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
-    transition: all 1.2s ease;
-    background: #fff;
+    box-shadow: 0 14px 32px rgba(0,0,0,0.18);
+    background: white;
 }
 
 .carousel-item img {
@@ -97,53 +98,29 @@ html, body {
     object-fit: cover;
 }
 
-/* POSICIONES */
-.left {
-    left: 0;
-    transform: scale(0.85);
-    opacity: 0.5;
-    z-index: 1;
-}
-
-.center {
-    left: 320px;
-    transform: scale(1);
-    opacity: 1;
-    z-index: 3;
-}
-
-.right {
-    left: 640px;
-    transform: scale(0.85);
-    opacity: 0.5;
-    z-index: 1;
+/* Movimiento infinito */
+@keyframes scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
 }
 </style>
 </head>
 
 <body>
 
-<!-- OVERLAY -->
+<!-- OVERLAY INTRO -->
 <div id="overlay">
     <div id="card">
-        <div id="title">INDICADORES DE COSTURA</div>
-        <div id="subtitle">ACTUALIZANDO INFORMACIÓN</div>
+        <div id="title">CULTURA DE COSTURA</div>
+        <div id="subtitle">VISIÓN INTEGRAL DE DESEMPEÑO</div>
 
         <div id="carousel">
-            <div class="carousel-item left">
-                <img src="img/productividad.jpg">
-            </div>
-            <div class="carousel-item center">
-                <img src="img/trabajo en equipo.jpg">
-            </div>
-            <div class="carousel-item right">
-                <img src="img/calidad.jpg">
-            </div>
+            <div class="carousel-track" id="carouselTrack"></div>
         </div>
     </div>
 </div>
 
-<!-- IFRAMES -->
+<!-- IFRAMES POWER BI -->
 <iframe id="frameA" class="iframe visible"></iframe>
 <iframe id="frameB" class="iframe"></iframe>
 
@@ -152,8 +129,41 @@ html, body {
    LINKS POWER BI
    ========================= */
 const links = [
-  "https://app.powerbi.com/view?r=eyJrIjoiNjMyMDUwNWYtNWIzNS00ODRiLWE3NTAtOTRkZWY1MzFhMmJiIiwidCI6IjU0NmM0MjUzLTY3NTQtNGYwNC05OWRiLTY5MWMyMDQ2YjJlYyIsImMiOjR9",
-  "https://app.powerbi.com/view?r=eyJrIjoiMDEzNTdhNTUtOGU4ZS00MDVhLWEwMWItMGJhZTQxZDI4ZTg0IiwidCI6IjU0NmM0MjUzLTY3NTQtNGYwNC05OWRiLTY5MWMyMDQ2YjJlYyIsImMiOjR9"
+    /* BI GENERAL */
+    "https://app.powerbi.com/view?r=eyJrIjoiNjMyMDUwNWYtNWIzNS00ODRiLWE3NTAtOTRkZWY1MzFhMmJiIiwidCI6IjU0NmM0MjUzLTY3NTQtNGYwNC05OWRiLTY5MWMyMDQ2YjJlYyIsImMiOjR9",
+
+    /* BI SEMANA */
+    "https://app.powerbi.com/view?r=eyJrIjoiMWNiNGUzNDEtYjA1ZC00N2U3LWJiYzEtNDQ0MTljMWQxNTliIiwidCI6IjU0NmM0MjUzLTY3NTQtNGYwNC05OWRiLTY5MWMyMDQ2YjJlYyIsImMiOjR9",
+
+    /* BI DÍA */
+    "https://app.powerbi.com/view?r=eyJrIjoiMDEzNTdhNTUtOGU4ZS00MDVhLWEwMWItMGJhZTQxZDI4ZTg0IiwidCI6IjU0NmM0MjUzLTY3NTQtNGYwNC05OWRiLTY5MWMyMDQ2YjJlYyIsImMiOjR9"
+];
+
+/* =========================
+   IMÁGENES POR BI
+   ========================= */
+const imageSets = [
+    /* BI GENERAL – 6 */
+    [
+        "img/productividad.jpg",
+        "img/trabajo en equipo.jpg",
+        "img/calidad.jpg",
+        "img/empatia.jpg",
+        "img/obsesion por el cliente.jpg",
+        "img/orientacion a resultados.jpg"
+    ],
+    /* BI SEMANA – 3 */
+    [
+        "img/trabajo en equipo.jpg",
+        "img/obsesion por el cliente.jpg",
+        "img/orientacion a resultados.jpg"
+    ],
+    /* BI DÍA – 3 */
+    [
+        "img/empatia.jpg",
+        "img/calidad.jpg",
+        "img/productividad.jpg"
+    ]
 ];
 
 let index = 0;
@@ -164,49 +174,54 @@ const frameB = document.getElementById("frameB");
 const overlay = document.getElementById("overlay");
 
 /* =========================
-   CARRUSEL ROTACIÓN
+   CONSTRUIR CARRUSEL
    ========================= */
-const items = document.querySelectorAll(".carousel-item");
+function buildCarousel(images) {
+    const track = document.getElementById("carouselTrack");
+    track.innerHTML = "";
 
-function rotateCarousel() {
-    items.forEach(item => {
-        if (item.classList.contains("left")) {
-            item.className = "carousel-item center";
-        } else if (item.classList.contains("center")) {
-            item.className = "carousel-item right";
-        } else {
-            item.className = "carousel-item left";
-        }
+    // duplicamos para scroll infinito
+    const loopImages = [...images, ...images];
+
+    loopImages.forEach(src => {
+        const item = document.createElement("div");
+        item.className = "carousel-item";
+        item.innerHTML = `<img src="${src}">`;
+        track.appendChild(item);
     });
 }
 
 /* =========================
    CARGA INICIAL
    ========================= */
-frameA.src = links[index++];
-setInterval(rotateCarousel, 2000);
+frameA.src = links[0];
+buildCarousel(imageSets[0]);
+index = 1;
 
 /* =========================
    PRELOAD
    ========================= */
 function preloadNext() {
     const next = links[index % links.length];
-    const preloadFrame = active === "A" ? frameB : frameA;
-    preloadFrame.src = next;
+    (active === "A" ? frameB : frameA).src = next;
 }
+preloadNext();
 
 /* =========================
-   SWAP SUAVE
+   SWAP CON INTRO
    ========================= */
 function swapFrames() {
     overlay.style.display = "flex";
 
-    const incoming = active === "A" ? frameB : frameA;
-    const outgoing = active === "A" ? frameA : frameB;
-
     setTimeout(() => {
+        buildCarousel(imageSets[index % imageSets.length]);
+
+        const incoming = active === "A" ? frameB : frameA;
+        const outgoing = active === "A" ? frameA : frameB;
+
         incoming.classList.add("visible");
         outgoing.classList.remove("visible");
+
         overlay.style.display = "none";
         active = active === "A" ? "B" : "A";
         index++;
@@ -214,7 +229,6 @@ function swapFrames() {
     }, 5000);
 }
 
-preloadNext();
 setInterval(swapFrames, 50000);
 </script>
 
