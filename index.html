@@ -2,21 +2,47 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Indicadores de Costura</title>
+<title>Cultura de Costura</title>
 
 <style>
 html, body {
     margin: 0;
     padding: 0;
     height: 100%;
-    background: #ffffff;
+    background: linear-gradient(45deg, #0a0a0a, #1a1a2e, #16213e); /* Fondo oscuro con gradiente futurista */
+    background-size: 400% 400%;
+    animation: gradientShift 10s ease infinite; /* Gradiente animado */
     overflow: hidden;
     font-family: "Segoe UI", system-ui, sans-serif;
+    position: relative;
 }
 
-/* =========================
-   IFRAMES
-   ========================= */
+/* Scan lines para efecto de pantalla futurista */
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 255, 255, 0.03) 2px,
+        rgba(0, 255, 255, 0.03) 4px
+    );
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* ================= IFRAMES ================= */
 .iframe {
     position: fixed;
     top: -2.5%;
@@ -25,125 +51,135 @@ html, body {
     height: 105%;
     border: none;
     opacity: 0;
-    transition: opacity 1s ease;
+    transition: opacity 1s ease, transform 1s ease;
     z-index: 1;
 }
-.visible {
-    opacity: 1;
-    z-index: 2;
-}
+.visible { opacity: 1; z-index: 2; }
 
-/* =========================
-   OVERLAY
-   ========================= */
+/* ================= OVERLAY ================= */
 #overlay {
     position: fixed;
     inset: 0;
-    background: rgba(255,255,255,0.96);
+    background: rgba(0, 0, 0, 0.9);
     z-index: 5;
-    display: none;
+    display: flex;
     align-items: center;
     justify-content: center;
+    clip-path: circle(0% at center); /* Empieza como un punto */
+    transition: clip-path 2s ease-in-out; /* Expansión dramática */
 }
 
-/* =========================
-   CARD CENTRAL
-   ========================= */
-#card {
-    text-align: center;
+#overlay.visible {
+    clip-path: circle(150% at center); /* Se expande a un círculo grande */
 }
+
+/* ================= CARD ================= */
+#card { text-align: center; }
 
 #title {
     font-size: 3vw;
     font-weight: 900;
-    letter-spacing: 5px;
-    color: #0f172a;
+    letter-spacing: 6px;
+    color: #00ffff; /* Neón cyan */
+    text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 40px #00ffff;
+    animation: glitch 2s infinite; /* Efecto glitch sutil */
+}
+
+@keyframes glitch {
+    0%, 100% { transform: translate(0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(-2px, -2px); }
+    60% { transform: translate(2px, 2px); }
+    80% { transform: translate(2px, -2px); }
 }
 
 #subtitle {
     font-size: 1.2vw;
     letter-spacing: 3px;
-    color: #475569;
+    color: #ff00ff; /* Neón magenta */
+    text-shadow: 0 0 10px #ff00ff;
     margin: 20px 0 50px;
 }
 
-/* =========================
-   CARRUSEL GERENCIAL
-   ========================= */
+/* ================= CAROUSEL ================= */
 #carousel {
     width: 1200px;
     height: 260px;
     overflow: hidden;
     margin: auto;
+    position: relative;
 }
 
-.carousel-track {
+#track {
     display: flex;
     gap: 24px;
-    animation: scroll 18s linear infinite;
+    transition: transform 2s ease-in-out; /* Más lenta y suave */
 }
 
-.carousel-item {
-    min-width: 220px;
+.item {
+    width: 220px;
     height: 240px;
     border-radius: 18px;
     overflow: hidden;
-    box-shadow: 0 14px 32px rgba(0,0,0,0.18);
-    background: white;
+    background: #fff;
+    opacity: 0.4;
+    filter: blur(2px);
+    transform: scale(0.9);
+    transition: all 1.5s ease-in-out; /* Transición más larga y suave para opacity, filter, transform */
+    box-shadow: 0 10px 26px rgba(0,0,0,0.15);
+    border: 2px solid transparent;
 }
 
-.carousel-item img {
+.item.active {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1.08);
+    box-shadow: 0 20px 45px rgba(0,0,0,0.35), 0 0 30px #00ffff; /* Glow neón */
+    border-color: #00ffff;
+}
+
+.item.fading {
+    opacity: 0; /* Estado intermedio para fade out */
+    filter: blur(4px);
+    transform: scale(0.8);
+}
+
+.item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-}
-
-/* Movimiento infinito */
-@keyframes scroll {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
 }
 </style>
 </head>
 
 <body>
 
-<!-- OVERLAY INTRO -->
 <div id="overlay">
     <div id="card">
         <div id="title">CULTURA DE COSTURA</div>
-        <div id="subtitle">VISIÓN INTEGRAL DE DESEMPEÑO</div>
-
+        <div id="subtitle"></div>
         <div id="carousel">
-            <div class="carousel-track" id="carouselTrack"></div>
+            <div id="track"></div>
         </div>
     </div>
 </div>
 
-<!-- IFRAMES POWER BI -->
 <iframe id="frameA" class="iframe visible"></iframe>
 <iframe id="frameB" class="iframe"></iframe>
 
+<canvas id="particles" style="position: fixed; top: 0; left: 0; z-index: 0;"></canvas>
+
 <script>
-/* =========================
-   LINKS POWER BI
-   ========================= */
+/* ================= DATA ================= */
 const links = [
-    /* BI GENERAL */
     "https://app.powerbi.com/view?r=eyJrIjoiNjMyMDUwNWYtNWIzNS00ODRiLWE3NTAtOTRkZWY1MzFhMmJiIiwidCI6IjU0NmM0MjUzLTY3NTQtNGYwNC05OWRiLTY5MWMyMDQ2YjJlYyIsImMiOjR9",
-
-    /* BI SEMANA */
     "https://app.powerbi.com/view?r=eyJrIjoiMWNiNGUzNDEtYjA1ZC00N2U3LWJiYzEtNDQ0MTljMWQxNTliIiwidCI6IjU0NmM0MjUzLTY3NTQtNGYwNC05OWRiLTY5MWMyMDQ2YjJlYyIsImMiOjR9",
-
-    /* BI DÍA */
-    "https://app.powerbi.com/view?r=eyJrIjoiMDEzNTdhNTUtOGU4ZS00MDVhLWEwMWItMGJhZTQxZDI4ZTg0IiwidCI6IjU0NmM0MjUzLTY3NTQtNGYwNC05OWRiLTY5MWMyMDQ2YjJlYyIsImMiOjR9"
+    "https://app.powerbi.com/view?r=eyJrIjoiMDEzNTdhNTUtOGU4ZS00MDVhLWEwMWItMGJhZTQxZDI4ZTg0IiwidCI6IjU0NmM0MjUzLTY3NTQtNGYwNC05OWRiLTY5MWMyMDQ2YjJlYyIsImMiOjR9",
+    "https://app.powerbi.com/view?r=eyJrIjoiNjE4MGQ4NWEtNTUwYS00ZTg4LWFhNjUtYWMwYzE5YWI2MTcxIiwidCI6IjU0NmM0MjUzLTY3NTQtNGYwNC05OWRiLTY5MWMyMDQ2YjJlYyIsImMiOjR9",
+    "https://app.powerbi.com/view?r=eyJrIjoiMDhlOWZmZGQtZWNlMS00NmY4LWJjM2EtYTdkZjdiNjQ0YWU2IiwidCI6IjU0NmM0MjUzLTY3NTQtNGYwNC05OWRiLTY5MWMyMDQ2YjJlYyIsImMiOjR9"
 ];
 
-/* =========================
-   IMÁGENES POR BI
-   ========================= */
-const imageSets = [
-    /* BI GENERAL – 6 */
+const images = [
     [
         "img/productividad.jpg",
         "img/trabajo en equipo.jpg",
@@ -152,84 +188,161 @@ const imageSets = [
         "img/obsesion por el cliente.jpg",
         "img/orientacion a resultados.jpg"
     ],
-    /* BI SEMANA – 3 */
     [
         "img/trabajo en equipo.jpg",
         "img/obsesion por el cliente.jpg",
         "img/orientacion a resultados.jpg"
     ],
-    /* BI DÍA – 3 */
     [
-        "img/empatia.jpg",
+        "img/productividad.jpg",
         "img/calidad.jpg",
-        "img/productividad.jpg"
+        "img/empatia.jpg"
     ]
 ];
 
-let index = 0;
-let active = "A";
+const subtitles = [
+    "VISIÓN INTEGRAL DE DESEMPEÑO",
+    "ENFOQUE SEMANAL DE RESULTADOS",
+    "GESTIÓN DIARIA OPERATIVA"
+];
 
+/* ================= STATE ================= */
+let biIndex = 0;
+let slideIndex = 0;
+let activeFrame = "A";
+let heroTimer;
+
+/* ================= ELEMENTS ================= */
 const frameA = document.getElementById("frameA");
 const frameB = document.getElementById("frameB");
 const overlay = document.getElementById("overlay");
+const track = document.getElementById("track");
+const subtitle = document.getElementById("subtitle");
 
-/* =========================
-   CONSTRUIR CARRUSEL
-   ========================= */
-function buildCarousel(images) {
-    const track = document.getElementById("carouselTrack");
+/* ================= BUILD ================= */
+function buildCarousel(set) {
+    clearInterval(heroTimer);
     track.innerHTML = "";
+    slideIndex = 0;
 
-    // duplicamos para scroll infinito
-    const loopImages = [...images, ...images];
-
-    loopImages.forEach(src => {
-        const item = document.createElement("div");
-        item.className = "carousel-item";
-        item.innerHTML = `<img src="${src}">`;
-        track.appendChild(item);
+    set.forEach((src, i) => {
+        const d = document.createElement("div");
+        d.className = "item" + (i === 0 ? " active" : "");
+        d.innerHTML = `<img src="${src}">`;
+        track.appendChild(d);
     });
+
+    track.style.transform = "translateX(0)";
+    heroTimer = setInterval(rotateHero, 3500); // Aumentado a 3.5s para más suavidad
 }
 
-/* =========================
-   CARGA INICIAL
-   ========================= */
+/* ================= ROTATE ================= */
+function rotateHero() {
+    const items = document.querySelectorAll(".item");
+    if (!items.length) return;
+
+    // Fade out del activo actual
+    items[slideIndex].classList.add("fading");
+    setTimeout(() => {
+        items[slideIndex].classList.remove("active", "fading");
+
+        // Avanza al siguiente
+        slideIndex = (slideIndex + 1) % items.length;
+        items[slideIndex].classList.add("active");
+
+        // Ajusta el translateX con un delay para sincronizar
+        setTimeout(() => {
+            const centerOffset = Math.max(0, slideIndex - 1) * 244;
+            track.style.transform = `translateX(-${centerOffset}px)`;
+        }, 500); // Delay para que el fade in coincida
+    }, 750); // Tiempo para el fade out
+}
+
+/* ================= INIT ================= */
 frameA.src = links[0];
-buildCarousel(imageSets[0]);
-index = 1;
+subtitle.textContent = subtitles[0];
+buildCarousel(images[0]);
 
-/* =========================
-   PRELOAD
-   ========================= */
+/* ================= PRELOAD ================= */
 function preloadNext() {
-    const next = links[index % links.length];
-    (active === "A" ? frameB : frameA).src = next;
+    const next = links[(biIndex + 1) % links.length];
+    (activeFrame === "A" ? frameB : frameA).src = next;
 }
-preloadNext();
 
-/* =========================
-   SWAP CON INTRO
-   ========================= */
-function swapFrames() {
+/* ================= SWAP ================= */
+function swapBI() {
+    // Agrega un flash de luz antes del overlay
+    const flash = document.createElement("div");
+    flash.style.cssText = `
+        position: fixed; inset: 0; background: white; opacity: 0; z-index: 6;
+        transition: opacity 0.5s ease;
+    `;
+    document.body.appendChild(flash);
+    setTimeout(() => flash.style.opacity = 0.8, 100);
+    setTimeout(() => flash.remove(), 600); // Flash rápido
+
+    overlay.classList.add("visible"); // Activa el clip-path
     overlay.style.display = "flex";
 
     setTimeout(() => {
-        buildCarousel(imageSets[index % imageSets.length]);
+        biIndex = (biIndex + 1) % links.length;
+        subtitle.textContent = subtitles[biIndex];
+        buildCarousel(images[biIndex]);
 
-        const incoming = active === "A" ? frameB : frameA;
-        const outgoing = active === "A" ? frameA : frameB;
+        const incoming = activeFrame === "A" ? frameB : frameA;
+        const outgoing = activeFrame === "A" ? frameA : frameB;
 
+        // Transición más dramática: zoom y slide
+        incoming.style.transform = "scale(0.8) translateX(100%)";
         incoming.classList.add("visible");
-        outgoing.classList.remove("visible");
+        setTimeout(() => {
+            incoming.style.transform = "scale(1) translateX(0)";
+            outgoing.classList.remove("visible");
+        }, 500);
 
-        overlay.style.display = "none";
-        active = active === "A" ? "B" : "A";
-        index++;
+        activeFrame = activeFrame === "A" ? "B" : "A";
+        overlay.classList.remove("visible"); // Contrae el portal
+        setTimeout(() => overlay.style.display = "none", 2000);
         preloadNext();
-    }, 5000);
+    }, 4500);
 }
 
-setInterval(swapFrames, 50000);
+preloadNext();
+setInterval(swapBI, 50000);
+
+/* ================= PARTICLES ================= */
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+for (let i = 0; i < 50; i++) {
+    particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 2,
+        vy: (Math.random() - 0.5) * 2,
+        size: Math.random() * 3 + 1,
+        color: Math.random() > 0.5 ? "#00ffff" : "#ff00ff"
+    });
+}
+
+function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+    });
+    requestAnimationFrame(animateParticles);
+}
+animateParticles();
 </script>
 
 </body>
