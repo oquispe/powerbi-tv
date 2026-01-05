@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8" />
 <title>Cultura de Costura</title>
 
 <style>
@@ -9,22 +9,19 @@ html, body {
     margin: 0;
     padding: 0;
     height: 100%;
-    background: linear-gradient(45deg, #0a0a0a, #1a1a2e, #16213e); /* Fondo oscuro con gradiente futurista */
+    background: linear-gradient(45deg, #0a0a0a, #1a1a2e, #16213e);
     background-size: 400% 400%;
-    animation: gradientShift 10s ease infinite; /* Gradiente animado */
+    animation: gradientShift 10s ease infinite;
     overflow: hidden;
     font-family: "Segoe UI", system-ui, sans-serif;
     position: relative;
 }
 
-/* Scan lines para efecto de pantalla futurista */
-body::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+/* Scan lines */
+body::before{
+    content:"";
+    position:absolute;
+    inset:0;
     background: repeating-linear-gradient(
         0deg,
         transparent,
@@ -32,18 +29,18 @@ body::before {
         rgba(0, 255, 255, 0.03) 2px,
         rgba(0, 255, 255, 0.03) 4px
     );
-    pointer-events: none;
-    z-index: 0;
+    pointer-events:none;
+    z-index:0;
 }
 
-@keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+@keyframes gradientShift{
+    0%{ background-position:0% 50%; }
+    50%{ background-position:100% 50%; }
+    100%{ background-position:0% 50%; }
 }
 
 /* ================= IFRAMES ================= */
-.iframe {
+.iframe{
     position: fixed;
     top: -2.5%;
     left: 0;
@@ -54,69 +51,65 @@ body::before {
     transition: opacity 1s ease, transform 1s ease;
     z-index: 1;
 }
-.visible { opacity: 1; z-index: 2; }
+.visible{ opacity: 1; z-index: 2; }
 
 /* ================= OVERLAY ================= */
-#overlay {
+#overlay{
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.9);
+    background: rgba(0,0,0,0.9);
     z-index: 5;
     display: flex;
     align-items: center;
     justify-content: center;
-    clip-path: circle(0% at center); /* Empieza como un punto */
-    transition: clip-path 2s ease-in-out; /* Expansión dramática */
+    clip-path: circle(0% at center);
+    transition: clip-path 2s ease-in-out;
 }
-
-#overlay.visible {
-    clip-path: circle(150% at center); /* Se expande a un círculo grande */
-}
+#overlay.visible{ clip-path: circle(150% at center); }
 
 /* ================= CARD ================= */
-#card { text-align: center; }
+#card{ text-align:center; }
 
-#title {
+#title{
     font-size: 3vw;
     font-weight: 900;
     letter-spacing: 6px;
-    color: #00ffff; /* Neón cyan */
+    color: #00ffff;
     text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 40px #00ffff;
-    animation: glitch 2s infinite; /* Efecto glitch sutil */
+    animation: glitch 2s infinite;
 }
 
-@keyframes glitch {
-    0%, 100% { transform: translate(0); }
-    20% { transform: translate(-2px, 2px); }
-    40% { transform: translate(-2px, -2px); }
-    60% { transform: translate(2px, 2px); }
-    80% { transform: translate(2px, -2px); }
+@keyframes glitch{
+    0%,100%{ transform: translate(0); }
+    20%{ transform: translate(-2px,2px); }
+    40%{ transform: translate(-2px,-2px); }
+    60%{ transform: translate(2px,2px); }
+    80%{ transform: translate(2px,-2px); }
 }
 
-#subtitle {
+#subtitle{
     font-size: 1.2vw;
     letter-spacing: 3px;
-    color: #ff00ff; /* Neón magenta */
+    color: #ff00ff;
     text-shadow: 0 0 10px #ff00ff;
     margin: 20px 0 50px;
 }
 
 /* ================= CAROUSEL ================= */
-#carousel {
+#carousel{
     width: 1200px;
     height: 260px;
     overflow: hidden;
     margin: auto;
     position: relative;
 }
-
-#track {
-    display: flex;
-    gap: 24px;
-    transition: transform 2s ease-in-out; /* Más lenta y suave */
+#track{
+    display:flex;
+    gap:24px;
+    transition: transform 2s ease-in-out;
 }
 
-.item {
+.item{
     width: 220px;
     height: 240px;
     border-radius: 18px;
@@ -125,26 +118,26 @@ body::before {
     opacity: 0.4;
     filter: blur(2px);
     transform: scale(0.9);
-    transition: all 1.5s ease-in-out; /* Transición más larga y suave para opacity, filter, transform */
+    transition: all 1.5s ease-in-out;
     box-shadow: 0 10px 26px rgba(0,0,0,0.15);
     border: 2px solid transparent;
 }
 
-.item.active {
+.item.active{
     opacity: 1;
     filter: blur(0);
     transform: scale(1.08);
-    box-shadow: 0 20px 45px rgba(0,0,0,0.35), 0 0 30px #00ffff; /* Glow neón */
+    box-shadow: 0 20px 45px rgba(0,0,0,0.35), 0 0 30px #00ffff;
     border-color: #00ffff;
 }
 
-.item.fading {
-    opacity: 0; /* Estado intermedio para fade out */
+.item.fading{
+    opacity: 0;
     filter: blur(4px);
     transform: scale(0.8);
 }
 
-.item img {
+.item img{
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -155,62 +148,61 @@ body::before {
 <body>
 
 <div id="overlay">
-    <div id="card">
-        <div id="title">CULTURA DE COSTURA</div>
-        <div id="subtitle"></div>
-        <div id="carousel">
-            <div id="track"></div>
-        </div>
+  <div id="card">
+    <div id="title">CULTURA DE COSTURA</div>
+    <div id="subtitle"></div>
+    <div id="carousel">
+      <div id="track"></div>
     </div>
+  </div>
 </div>
 
 <iframe id="frameA" class="iframe visible"></iframe>
 <iframe id="frameB" class="iframe"></iframe>
 
-<canvas id="particles" style="position: fixed; top: 0; left: 0; z-index: 0;"></canvas>
+<canvas id="particles" style="position: fixed; top:0; left:0; z-index:0;"></canvas>
 
 <script>
 /* ================= DATA ================= */
 const links = [
-    "https://app.powerbi.com/view?r=eyJrIjoiNjMyMDUwNWYtNWIzNS00ODRiLWE3NTAtOTRkZWY1MzFhMmJiIiwidCI6IjU0NmM0MjUzLTY3NTQtNGYwNC05OWRiLTY5MWMyMDQ2YjJlYyIsImMiOjR9",
-    "https://app.powerbi.com/view?r=eyJrIjoiMWNiNGUzNDEtYjA1ZC00N2U3LWJiYzEtNDQ0MTljMWQxNTliIiwidCI6IjU0NmM0MjUzLTY3NTQtNGYwNC05OWRiLTY5MWMyMDQ2YjJlYyIsImMiOjR9",
-    "https://app.powerbi.com/view?r=eyJrIjoiMDEzNTdhNTUtOGU4ZS00MDVhLWEwMWItMGJhZTQxZDI4ZTg0IiwidCI6IjU0NmM0MjUzLTY3NTQtNGYwNC05OWRiLTY5MWMyMDQ2YjJlYyIsImMiOjR9",
-    "https://app.powerbi.com/view?r=eyJrIjoiNjE4MGQ4NWEtNTUwYS00ZTg4LWFhNjUtYWMwYzE5YWI2MTcxIiwidCI6IjU0NmM0MjUzLTY3NTQtNGYwNC05OWRiLTY5MWMyMDQ2YjJlYyIsImMiOjR9",
-    "https://app.powerbi.com/view?r=eyJrIjoiMDhlOWZmZGQtZWNlMS00NmY4LWJjM2EtYTdkZjdiNjQ0YWU2IiwidCI6IjU0NmM0MjUzLTY3NTQtNGYwNC05OWRiLTY5MWMyMDQ2YjJlYyIsImMiOjR9"
+  "https://app.powerbi.com/view?r=eyJrIjoiNjMyMDUwNWYtNWIzNS00ODRiLWE3NTAtOTRkZWY1MzFhMmJiIiwidCI6IjU0NmM0MjUzLTY3NTQtNGYwNC05OWRiLTY5MWMyMDQ2YjJlYyIsImMiOjR9",
+  "https://app.powerbi.com/view?r=eyJrIjoiMWNiNGUzNDEtYjA1ZC00N2U3LWJiYzEtNDQ0MTljMWQxNTliIiwidCI6IjU0NmM0MjUzLTY3NTQtNGYwNC05OWRiLTY5MWMyMDQ2YjJlYyIsImMiOjR9",
+  "https://app.powerbi.com/view?r=eyJrIjoiMDEzNTdhNTUtOGU4ZS00MDVhLWEwMWItMGJhZTQxZDI4ZTg0IiwidCI6IjU0NmM0MjUzLTY3NTQtNGYwNC05OWRiLTY5MWMyMDQ2YjJlYyIsImMiOjR9",
+  "https://app.powerbi.com/view?r=eyJrIjoiNjE4MGQ4NWEtNTUwYS00ZTg4LWFhNjUtYWMwYzE5YWI2MTcxIiwidCI6IjU0NmM0MjUzLTY3NTQtNGYwNC05OWRiLTY5MWMyMDQ2YjJlYyIsImMiOjR9",
+  "https://app.powerbi.com/view?r=eyJrIjoiMDhlOWZmZGQtZWNlMS00NmY4LWJjM2EtYTdkZjdiNjQ0YWU2IiwidCI6IjU0NmM0MjUzLTY3NTQtNGYwNC05OWRiLTY5MWMyMDQ2YjJlYyIsImMiOjR9"
 ];
 
 const images = [
-    [
-        "img/productividad.jpg",
-        "img/trabajo en equipo.jpg",
-        "img/calidad.jpg",
-        "img/Empatia.jpg",
-        "img/obsesion por el cliente.jpg",
-        "img/orientacion a resultados.jpg"
-    ],
-    [
-        "img/trabajo en equipo.jpg",
-        "img/obsesion por el cliente.jpg",
-        "img/orientacion a resultados.jpg"
-    ],
-    [
-        "img/productividad.jpg",
-        "img/calidad.jpg",
-        "img/Empatia.jpg"
-    ]
+  ["img/productividad.jpg","img/trabajo en equipo.jpg","img/calidad.jpg","img/empatia.jpg","img/obsesion por el cliente.jpg","img/orientacion a resultados.jpg"],
+  ["img/trabajo en equipo.jpg","img/obsesion por el cliente.jpg","img/orientacion a resultados.jpg"],
+  ["img/productividad.jpg","img/calidad.jpg","img/empatia.jpg"],
+  ["img/calidad.jpg","img/orientacion a resultados.jpg","img/empatia.jpg"],
+  ["img/productividad.jpg","img/trabajo en equipo.jpg","img/obsesion por el cliente.jpg"]
 ];
 
 const subtitles = [
-    "VISIÓN INTEGRAL DE DESEMPEÑO",
-    "ENFOQUE SEMANAL DE RESULTADOS",
-    "GESTIÓN DIARIA OPERATIVA"
+  "VISIÓN INTEGRAL DE DESEMPEÑO",
+  "ENFOQUE SEMANAL DE RESULTADOS",
+  "GESTIÓN DIARIA OPERATIVA",
+  "CONTROL DE CALIDAD Y RDL",
+  "CULTURA Y DISCIPLINA"
 ];
+
+/* ================= SETTINGS (ANTI-FREEZE) ================= */
+const SWAP_INTERVAL_MS   = 50000;  // cada 50s cambias de reporte
+const PRELOAD_TIMEOUT_MS = 25000;  // si el siguiente no carga en 25s => retry
+const WATCHDOG_MS        = 15000;  // cada 15s revisa salud
+const MAX_RETRIES_SAME   = 2;      // si falla 2 veces, salta al siguiente
 
 /* ================= STATE ================= */
 let biIndex = 0;
 let slideIndex = 0;
 let activeFrame = "A";
 let heroTimer;
+
+let isSwapping = false;
+let retryCount = 0;
+let lastVisibleOkTs = Date.now();
 
 /* ================= ELEMENTS ================= */
 const frameA = document.getElementById("frameA");
@@ -219,133 +211,216 @@ const overlay = document.getElementById("overlay");
 const track = document.getElementById("track");
 const subtitle = document.getElementById("subtitle");
 
-/* ================= BUILD ================= */
-function buildCarousel(set) {
-    clearInterval(heroTimer);
-    track.innerHTML = "";
-    slideIndex = 0;
+/* ================= BUILD CAROUSEL ================= */
+function buildCarousel(set){
+  clearInterval(heroTimer);
+  track.innerHTML = "";
+  slideIndex = 0;
 
-    set.forEach((src, i) => {
-        const d = document.createElement("div");
-        d.className = "item" + (i === 0 ? " active" : "");
-        d.innerHTML = `<img src="${src}">`;
-        track.appendChild(d);
-    });
+  set.forEach((src, i) => {
+    const d = document.createElement("div");
+    d.className = "item" + (i === 0 ? " active" : "");
+    d.innerHTML = `<img src="${src}">`;
+    track.appendChild(d);
+  });
 
-    track.style.transform = "translateX(0)";
-    heroTimer = setInterval(rotateHero, 3500); // Aumentado a 3.5s para más suavidad
+  track.style.transform = "translateX(0)";
+  heroTimer = setInterval(rotateHero, 3500);
 }
 
-/* ================= ROTATE ================= */
-function rotateHero() {
-    const items = document.querySelectorAll(".item");
-    if (!items.length) return;
+/* ================= ROTATE HERO ================= */
+function rotateHero(){
+  const items = document.querySelectorAll(".item");
+  if (!items.length) return;
 
-    // Fade out del activo actual
-    items[slideIndex].classList.add("fading");
+  items[slideIndex].classList.add("fading");
+  setTimeout(() => {
+    items[slideIndex].classList.remove("active","fading");
+
+    slideIndex = (slideIndex + 1) % items.length;
+    items[slideIndex].classList.add("active");
+
     setTimeout(() => {
-        items[slideIndex].classList.remove("active", "fading");
+      const centerOffset = Math.max(0, slideIndex - 1) * 244;
+      track.style.transform = `translateX(-${centerOffset}px)`;
+    }, 500);
 
-        // Avanza al siguiente
-        slideIndex = (slideIndex + 1) % items.length;
-        items[slideIndex].classList.add("active");
+  }, 750);
+}
 
-        // Ajusta el translateX con un delay para sincronizar
-        setTimeout(() => {
-            const centerOffset = Math.max(0, slideIndex - 1) * 244;
-            track.style.transform = `translateX(-${centerOffset}px)`;
-        }, 500); // Delay para que el fade in coincida
-    }, 750); // Tiempo para el fade out
+/* ================= HELPERS ================= */
+function getIncomingFrame(){ return activeFrame === "A" ? frameB : frameA; }
+function getOutgoingFrame(){ return activeFrame === "A" ? frameA : frameB; }
+
+function cacheBust(url){
+  const sep = url.includes("?") ? "&" : "?";
+  return `${url}${sep}cb=${Date.now()}`;
+}
+
+/* ================= SAFE PRELOAD ================= */
+function preloadFrame(frame, url){
+  return new Promise((resolve, reject) => {
+    let done = false;
+
+    const onLoad = () => {
+      if (done) return;
+      done = true;
+      frame.removeEventListener("load", onLoad);
+      clearTimeout(t);
+      resolve(true);
+    };
+
+    frame.addEventListener("load", onLoad, { once: true });
+    frame.src = cacheBust(url);
+
+    const t = setTimeout(() => {
+      if (done) return;
+      done = true;
+      frame.removeEventListener("load", onLoad);
+      reject(new Error("PRELOAD_TIMEOUT"));
+    }, PRELOAD_TIMEOUT_MS);
+  });
+}
+
+/* ================= SWAP WITH GUARANTEE ================= */
+async function swapBI(){
+  if (isSwapping) return;
+  isSwapping = true;
+
+  const nextIndex = (biIndex + 1) % links.length;
+  const nextUrl = links[nextIndex];
+
+  const incoming = getIncomingFrame();
+  const outgoing = getOutgoingFrame();
+
+  try {
+    // 1) precarga real
+    await preloadFrame(incoming, nextUrl);
+
+    // 2) overlay
+    overlay.classList.add("visible");
+    overlay.style.display = "flex";
+
+    // flash leve
+    const flash = document.createElement("div");
+    flash.style.cssText = `
+      position:fixed; inset:0; background:white; opacity:0; z-index:6;
+      transition:opacity .4s ease;
+    `;
+    document.body.appendChild(flash);
+    setTimeout(() => flash.style.opacity = 0.65, 50);
+    setTimeout(() => flash.remove(), 450);
+
+    setTimeout(() => {
+      biIndex = nextIndex;
+
+      subtitle.textContent = subtitles[biIndex] || "";
+      buildCarousel(images[biIndex] || images[0]);
+
+      incoming.style.transform = "scale(0.9) translateX(100%)";
+      incoming.classList.add("visible");
+
+      setTimeout(() => {
+        incoming.style.transform = "scale(1) translateX(0)";
+        outgoing.classList.remove("visible");
+        outgoing.style.transform = "";
+      }, 450);
+
+      activeFrame = activeFrame === "A" ? "B" : "A";
+
+      overlay.classList.remove("visible");
+      setTimeout(() => overlay.style.display = "none", 1800);
+
+      retryCount = 0;
+      lastVisibleOkTs = Date.now();
+      isSwapping = false;
+
+    }, 1200);
+
+  } catch (e) {
+    // precarga falló
+    retryCount++;
+    incoming.src = "about:blank";
+
+    if (retryCount >= MAX_RETRIES_SAME) {
+      // saltar para no quedar pegado en un reporte malo
+      biIndex = nextIndex;
+      retryCount = 0;
+    }
+
+    isSwapping = false;
+  }
+}
+
+/* ================= WATCHDOG (ANTI BLACK SCREEN) ================= */
+function watchdog(){
+  const visible = (activeFrame === "A") ? frameA : frameB;
+
+  const src = (visible.getAttribute("src") || "").toLowerCase();
+  const looksBad = (!src || src.includes("about:blank"));
+
+  const tooLong = (Date.now() - lastVisibleOkTs) > (SWAP_INTERVAL_MS + 20000);
+
+  if (looksBad || tooLong) {
+    // refresca el reporte actual visible
+    const url = links[biIndex];
+    visible.src = cacheBust(url);
+    lastVisibleOkTs = Date.now();
+  }
 }
 
 /* ================= INIT ================= */
-frameA.src = links[0];
+frameA.src = cacheBust(links[0]);
 subtitle.textContent = subtitles[0];
 buildCarousel(images[0]);
 
-/* ================= PRELOAD ================= */
-function preloadNext() {
-    const next = links[(biIndex + 1) % links.length];
-    (activeFrame === "A" ? frameB : frameA).src = next;
-}
+frameA.addEventListener("load", () => { if (activeFrame === "A") lastVisibleOkTs = Date.now(); });
+frameB.addEventListener("load", () => { if (activeFrame === "B") lastVisibleOkTs = Date.now(); });
 
-/* ================= SWAP ================= */
-function swapBI() {
-    // Agrega un flash de luz antes del overlay
-    const flash = document.createElement("div");
-    flash.style.cssText = `
-        position: fixed; inset: 0; background: white; opacity: 0; z-index: 6;
-        transition: opacity 0.5s ease;
-    `;
-    document.body.appendChild(flash);
-    setTimeout(() => flash.style.opacity = 0.8, 100);
-    setTimeout(() => flash.remove(), 600); // Flash rápido
-
-    overlay.classList.add("visible"); // Activa el clip-path
-    overlay.style.display = "flex";
-
-    setTimeout(() => {
-        biIndex = (biIndex + 1) % links.length;
-        subtitle.textContent = subtitles[biIndex];
-        buildCarousel(images[biIndex]);
-
-        const incoming = activeFrame === "A" ? frameB : frameA;
-        const outgoing = activeFrame === "A" ? frameA : frameB;
-
-        // Transición más dramática: zoom y slide
-        incoming.style.transform = "scale(0.8) translateX(100%)";
-        incoming.classList.add("visible");
-        setTimeout(() => {
-            incoming.style.transform = "scale(1) translateX(0)";
-            outgoing.classList.remove("visible");
-        }, 500);
-
-        activeFrame = activeFrame === "A" ? "B" : "A";
-        overlay.classList.remove("visible"); // Contrae el portal
-        setTimeout(() => overlay.style.display = "none", 2000);
-        preloadNext();
-    }, 4500);
-}
-
-preloadNext();
-setInterval(swapBI, 50000);
+setInterval(swapBI, SWAP_INTERVAL_MS);
+setInterval(watchdog, WATCHDOG_MS);
 
 /* ================= PARTICLES ================= */
 const canvas = document.getElementById("particles");
 const ctx = canvas.getContext("2d");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+
+function resizeCanvas(){
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
 
 let particles = [];
 for (let i = 0; i < 50; i++) {
-    particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 2,
-        vy: (Math.random() - 0.5) * 2,
-        size: Math.random() * 3 + 1,
-        color: Math.random() > 0.5 ? "#00ffff" : "#ff00ff"
-    });
+  particles.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    vx: (Math.random() - 0.5) * 2,
+    vy: (Math.random() - 0.5) * 2,
+    size: Math.random() * 3 + 1,
+    color: Math.random() > 0.5 ? "#00ffff" : "#ff00ff"
+  });
 }
 
-function animateParticles() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles.forEach(p => {
-        p.x += p.vx;
-        p.y += p.vy;
-        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
-        ctx.fill();
-    });
-    requestAnimationFrame(animateParticles);
+function animateParticles(){
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => {
+    p.x += p.vx;
+    p.y += p.vy;
+
+    if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+    if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    ctx.fillStyle = p.color;
+    ctx.fill();
+  });
+  requestAnimationFrame(animateParticles);
 }
 animateParticles();
 </script>
 
 </body>
 </html>
-
-
