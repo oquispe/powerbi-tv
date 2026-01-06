@@ -11,13 +11,12 @@ html, body {
     height: 100%;
     background: linear-gradient(45deg, #0a0a0a, #1a1a2e, #16213e);
     background-size: 400% 400%;
-    animation: gradientShift 10s ease infinite;
+    animation: gradientShift 15s ease infinite;
     overflow: hidden;
     font-family: "Segoe UI", system-ui, sans-serif;
     position: relative;
 }
 
-/* Scan lines */
 body::before{
     content:"";
     position:absolute;
@@ -48,51 +47,108 @@ body::before{
     height: 105%;
     border: none;
     opacity: 0;
-    transition: opacity 1s ease, transform 1s ease;
+    transition: opacity 1s ease, transform 1s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 1;
+    will-change: opacity, transform;
+    transform: scale(0.95);
 }
-.visible{ opacity: 1; z-index: 2; }
+.visible{ 
+    opacity: 1; 
+    z-index: 2;
+    transform: scale(1);
+}
 
 /* ================= OVERLAY ================= */
 #overlay{
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.9);
+    background: radial-gradient(circle at center, rgba(0,20,40,0.95), rgba(0,0,0,0.98));
     z-index: 5;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
-    clip-path: circle(0% at center);
-    transition: clip-path 2s ease-in-out;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    backdrop-filter: blur(0px);
 }
-#overlay.visible{ clip-path: circle(150% at center); }
+#overlay.visible{ 
+    display: flex;
+    opacity: 1;
+    backdrop-filter: blur(10px);
+    animation: overlayPulse 2s ease-in-out;
+}
+
+@keyframes overlayPulse{
+    0%, 100%{ transform: scale(1); }
+    50%{ transform: scale(1.02); }
+}
 
 /* ================= CARD ================= */
 #card{ text-align:center; }
 
 #title{
-    font-size: 3vw;
+    font-size: 3.5vw;
     font-weight: 900;
-    letter-spacing: 6px;
+    letter-spacing: 8px;
     color: #00ffff;
-    text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 40px #00ffff;
-    animation: glitch 2s infinite;
+    text-shadow: 
+        0 0 20px rgba(0,255,255,0.8),
+        0 0 40px rgba(0,255,255,0.6),
+        0 0 60px rgba(0,255,255,0.4),
+        0 0 80px rgba(0,255,255,0.2);
+    animation: titleEnter 1.5s ease-out, glitchSubtle 3s infinite;
+    text-transform: uppercase;
 }
 
-@keyframes glitch{
-    0%,100%{ transform: translate(0); }
-    20%{ transform: translate(-2px,2px); }
-    40%{ transform: translate(-2px,-2px); }
-    60%{ transform: translate(2px,2px); }
-    80%{ transform: translate(2px,-2px); }
+@keyframes titleEnter{
+    0%{ 
+        opacity: 0; 
+        transform: translateY(-30px) scale(0.8);
+        letter-spacing: 20px;
+    }
+    100%{ 
+        opacity: 1; 
+        transform: translateY(0) scale(1);
+        letter-spacing: 8px;
+    }
+}
+
+@keyframes glitchSubtle{
+    0%,100%{ transform: translate(0) scale(1); }
+    25%{ transform: translate(-1px,1px) scale(1); }
+    50%{ transform: translate(1px,-1px) scale(1.01); }
+    75%{ transform: translate(-1px,-1px) scale(1); }
 }
 
 #subtitle{
-    font-size: 1.2vw;
-    letter-spacing: 3px;
-    color: #ff00ff;
-    text-shadow: 0 0 10px #ff00ff;
-    margin: 20px 0 50px;
+    font-size: 1.4vw;
+    letter-spacing: 4px;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(90deg, #00ffff, #ff00ff, #00ffff);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 25px 0 50px;
+    animation: subtitleSlide 1.2s ease-out, gradientFlow 4s linear infinite;
+    text-transform: uppercase;
+}
+
+@keyframes subtitleSlide{
+    0%{ 
+        opacity: 0; 
+        transform: translateX(-50px);
+    }
+    100%{ 
+        opacity: 1; 
+        transform: translateX(0);
+    }
+}
+
+@keyframes gradientFlow{
+    0%{ background-position: 0% center; }
+    100%{ background-position: 200% center; }
 }
 
 /* ================= CAROUSEL ================= */
@@ -106,35 +162,55 @@ body::before{
 #track{
     display:flex;
     gap:24px;
-    transition: transform 2s ease-in-out;
+    transition: transform 1.5s ease-in-out;
+    will-change: transform;
 }
 
 .item{
     width: 220px;
     height: 240px;
-    border-radius: 18px;
+    border-radius: 16px;
     overflow: hidden;
-    background: #fff;
+    background: linear-gradient(135deg, #1a1a2e, #0f0f1e);
     opacity: 0.4;
-    filter: blur(2px);
-    transform: scale(0.9);
-    transition: all 1.5s ease-in-out;
-    box-shadow: 0 10px 26px rgba(0,0,0,0.15);
-    border: 2px solid transparent;
+    filter: blur(2px) grayscale(50%);
+    transform: scale(0.88);
+    transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    border: 2px solid rgba(0,255,255,0.1);
+    will-change: transform, opacity;
+    position: relative;
+}
+
+.item::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(0,255,255,0.1), transparent);
+    opacity: 0;
+    transition: opacity 0.8s ease;
 }
 
 .item.active{
     opacity: 1;
-    filter: blur(0);
-    transform: scale(1.08);
-    box-shadow: 0 20px 45px rgba(0,0,0,0.35), 0 0 30px #00ffff;
+    filter: blur(0) grayscale(0%);
+    transform: scale(1.12);
+    box-shadow: 
+        0 25px 50px rgba(0,0,0,0.4), 
+        0 0 40px rgba(0,255,255,0.4),
+        inset 0 0 30px rgba(0,255,255,0.1);
     border-color: #00ffff;
+    border-width: 3px;
+}
+
+.item.active::before{
+    opacity: 1;
 }
 
 .item.fading{
     opacity: 0;
-    filter: blur(4px);
-    transform: scale(0.8);
+    filter: blur(5px) grayscale(100%);
+    transform: scale(0.75) rotateY(15deg);
 }
 
 .item img{
@@ -142,10 +218,53 @@ body::before{
     height: 100%;
     object-fit: cover;
 }
+
+/* Loading indicator */
+#loading{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    display: none;
+    color: #00ffff;
+    font-size: 1.8vw;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse{
+    0%, 100%{ opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+    50%{ opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
+}
+
+/* Hex grid background */
+#overlay::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: 
+        linear-gradient(30deg, rgba(0,255,255,0.02) 12%, transparent 12.5%, transparent 87%, rgba(0,255,255,0.02) 87.5%, rgba(0,255,255,0.02)),
+        linear-gradient(150deg, rgba(0,255,255,0.02) 12%, transparent 12.5%, transparent 87%, rgba(0,255,255,0.02) 87.5%, rgba(0,255,255,0.02)),
+        linear-gradient(30deg, rgba(0,255,255,0.02) 12%, transparent 12.5%, transparent 87%, rgba(0,255,255,0.02) 87.5%, rgba(0,255,255,0.02)),
+        linear-gradient(150deg, rgba(0,255,255,0.02) 12%, transparent 12.5%, transparent 87%, rgba(0,255,255,0.02) 87.5%, rgba(0,255,255,0.02));
+    background-size: 80px 140px;
+    background-position: 0 0, 0 0, 40px 70px, 40px 70px;
+    opacity: 0;
+    animation: hexFade 2s ease-in forwards;
+}
+
+@keyframes hexFade{
+    to{ opacity: 1; }
+}
 </style>
 </head>
 
 <body>
+
+<div id="loading">Cargando...</div>
 
 <div id="overlay">
   <div id="card">
@@ -188,21 +307,24 @@ const subtitles = [
   "CULTURA Y DISCIPLINA"
 ];
 
-/* ================= SETTINGS (ANTI-FREEZE) ================= */
-const SWAP_INTERVAL_MS   = 50000;  // cada 50s cambias de reporte
-const PRELOAD_TIMEOUT_MS = 25000;  // si el siguiente no carga en 25s => retry
-const WATCHDOG_MS        = 15000;  // cada 15s revisa salud
-const MAX_RETRIES_SAME   = 2;      // si falla 2 veces, salta al siguiente
+/* ================= CONFIGURACIÓN OPTIMIZADA ================= */
+const SWAP_INTERVAL_MS   = 55000;  // 55 segundos entre reportes
+const PRELOAD_START_MS   = 45000;  // Inicia precarga 10s antes
+const PRELOAD_TIMEOUT_MS = 35000;  // Timeout generoso de 35s
+const MAX_RETRIES        = 3;
 
 /* ================= STATE ================= */
 let biIndex = 0;
 let slideIndex = 0;
 let activeFrame = "A";
 let heroTimer;
+let preloadTimer;
+let swapTimer;
 
 let isSwapping = false;
+let isPreloading = false;
 let retryCount = 0;
-let lastVisibleOkTs = Date.now();
+let nextFrameReady = false;
 
 /* ================= ELEMENTS ================= */
 const frameA = document.getElementById("frameA");
@@ -210,6 +332,7 @@ const frameB = document.getElementById("frameB");
 const overlay = document.getElementById("overlay");
 const track = document.getElementById("track");
 const subtitle = document.getElementById("subtitle");
+const loading = document.getElementById("loading");
 
 /* ================= BUILD CAROUSEL ================= */
 function buildCarousel(set){
@@ -234,153 +357,198 @@ function rotateHero(){
   if (!items.length) return;
 
   items[slideIndex].classList.add("fading");
+  
   setTimeout(() => {
     items[slideIndex].classList.remove("active","fading");
-
     slideIndex = (slideIndex + 1) % items.length;
     items[slideIndex].classList.add("active");
 
-    setTimeout(() => {
-      const centerOffset = Math.max(0, slideIndex - 1) * 244;
-      track.style.transform = `translateX(-${centerOffset}px)`;
-    }, 500);
-
-  }, 750);
+    const centerOffset = Math.max(0, slideIndex - 1) * 244;
+    track.style.transform = `translateX(-${centerOffset}px)`;
+  }, 600);
 }
 
 /* ================= HELPERS ================= */
 function getIncomingFrame(){ return activeFrame === "A" ? frameB : frameA; }
 function getOutgoingFrame(){ return activeFrame === "A" ? frameA : frameB; }
 
-function cacheBust(url){
-  const sep = url.includes("?") ? "&" : "?";
-  return `${url}${sep}cb=${Date.now()}`;
-}
-
-/* ================= SAFE PRELOAD ================= */
-function preloadFrame(frame, url){
-  return new Promise((resolve, reject) => {
-    let done = false;
-
-    const onLoad = () => {
-      if (done) return;
-      done = true;
-      frame.removeEventListener("load", onLoad);
-      clearTimeout(t);
-      resolve(true);
-    };
-
-    frame.addEventListener("load", onLoad, { once: true });
-    frame.src = cacheBust(url);
-
-    const t = setTimeout(() => {
-      if (done) return;
-      done = true;
-      frame.removeEventListener("load", onLoad);
-      reject(new Error("PRELOAD_TIMEOUT"));
-    }, PRELOAD_TIMEOUT_MS);
-  });
-}
-
-/* ================= SWAP WITH GUARANTEE ================= */
-async function swapBI(){
-  if (isSwapping) return;
-  isSwapping = true;
+/* ================= PRELOAD ANTICIPADO ================= */
+function startPreload(){
+  if (isPreloading || isSwapping) return;
+  isPreloading = true;
 
   const nextIndex = (biIndex + 1) % links.length;
   const nextUrl = links[nextIndex];
+  const incoming = getIncomingFrame();
+
+  let loadTimeout;
+  let loaded = false;
+
+  const onLoad = () => {
+    if (loaded) return;
+    loaded = true;
+    clearTimeout(loadTimeout);
+    incoming.removeEventListener("load", onLoad);
+    nextFrameReady = true;
+    isPreloading = false;
+    console.log(`✓ Reporte ${nextIndex} precargado`);
+  };
+
+  incoming.addEventListener("load", onLoad);
+  incoming.src = nextUrl;
+
+  loadTimeout = setTimeout(() => {
+    if (loaded) return;
+    loaded = true;
+    incoming.removeEventListener("load", onLoad);
+    
+    retryCount++;
+    if (retryCount < MAX_RETRIES) {
+      console.log(`⚠ Reintentando carga (${retryCount}/${MAX_RETRIES})`);
+      isPreloading = false;
+      setTimeout(startPreload, 2000);
+    } else {
+      console.log("✗ Max reintentos alcanzado");
+      nextFrameReady = false;
+      isPreloading = false;
+      retryCount = 0;
+    }
+  }, PRELOAD_TIMEOUT_MS);
+}
+
+/* ================= SWAP OPTIMIZADO ================= */
+function swapBI(){
+  if (isSwapping) return;
+  
+  // Si no está listo, intenta precargar ahora
+  if (!nextFrameReady) {
+    console.log("Frame no listo, forzando precarga...");
+    loading.style.display = "block";
+    startPreload();
+    
+    // Espera máximo 15s más
+    setTimeout(() => {
+      if (nextFrameReady) {
+        executeSwap();
+      } else {
+        // Saltar al siguiente
+        console.log("Saltando reporte problemático");
+        biIndex = (biIndex + 1) % links.length;
+        loading.style.display = "none";
+        scheduleNextCycle();
+      }
+    }, 15000);
+    return;
+  }
+
+  executeSwap();
+}
+
+function executeSwap(){
+  isSwapping = true;
+  loading.style.display = "none";
 
   const incoming = getIncomingFrame();
   const outgoing = getOutgoingFrame();
 
-  try {
-    // 1) precarga real
-    await preloadFrame(incoming, nextUrl);
+  // Efecto de barrido digital
+  const scanline = document.createElement("div");
+  scanline.style.cssText = `
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(0,255,255,0.15) 45%,
+      rgba(0,255,255,0.3) 50%,
+      rgba(0,255,255,0.15) 55%,
+      transparent 100%
+    );
+    z-index: 4;
+    animation: scanDown 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+  `;
+  document.body.appendChild(scanline);
 
-    // 2) overlay
-    overlay.classList.add("visible");
-    overlay.style.display = "flex";
-
-    // flash leve
-    const flash = document.createElement("div");
-    flash.style.cssText = `
-      position:fixed; inset:0; background:white; opacity:0; z-index:6;
-      transition:opacity .4s ease;
-    `;
-    document.body.appendChild(flash);
-    setTimeout(() => flash.style.opacity = 0.65, 50);
-    setTimeout(() => flash.remove(), 450);
-
-    setTimeout(() => {
-      biIndex = nextIndex;
-
-      subtitle.textContent = subtitles[biIndex] || "";
-      buildCarousel(images[biIndex] || images[0]);
-
-      incoming.style.transform = "scale(0.9) translateX(100%)";
-      incoming.classList.add("visible");
-
-      setTimeout(() => {
-        incoming.style.transform = "scale(1) translateX(0)";
-        outgoing.classList.remove("visible");
-        outgoing.style.transform = "";
-      }, 450);
-
-      activeFrame = activeFrame === "A" ? "B" : "A";
-
-      overlay.classList.remove("visible");
-      setTimeout(() => overlay.style.display = "none", 1800);
-
-      retryCount = 0;
-      lastVisibleOkTs = Date.now();
-      isSwapping = false;
-
-    }, 1200);
-
-  } catch (e) {
-    // precarga falló
-    retryCount++;
-    incoming.src = "about:blank";
-
-    if (retryCount >= MAX_RETRIES_SAME) {
-      // saltar para no quedar pegado en un reporte malo
-      biIndex = nextIndex;
-      retryCount = 0;
+  const style = document.createElement("style");
+  style.textContent = `
+    @keyframes scanDown{
+      0%{ transform: translateY(-100%); opacity: 0; }
+      50%{ opacity: 1; }
+      100%{ transform: translateY(100%); opacity: 0; }
     }
+  `;
+  document.head.appendChild(style);
 
-    isSwapping = false;
-  }
+  setTimeout(() => {
+    scanline.remove();
+    style.remove();
+  }, 1200);
+
+  // Mostrar overlay con animación
+  overlay.classList.add("visible");
+
+  setTimeout(() => {
+    biIndex = (biIndex + 1) % links.length;
+    
+    subtitle.textContent = subtitles[biIndex] || "";
+    buildCarousel(images[biIndex] || images[0]);
+
+    // Swap con escala
+    incoming.style.transform = "scale(0.95)";
+    incoming.classList.add("visible");
+    
+    setTimeout(() => {
+      incoming.style.transform = "scale(1)";
+      outgoing.style.transform = "scale(1.05)";
+      outgoing.classList.remove("visible");
+      
+      setTimeout(() => {
+        outgoing.style.transform = "scale(0.95)";
+        activeFrame = activeFrame === "A" ? "B" : "A";
+        
+        // Ocultar overlay
+        setTimeout(() => {
+          overlay.classList.remove("visible");
+        }, 600);
+
+        nextFrameReady = false;
+        retryCount = 0;
+        isSwapping = false;
+
+        // Programar siguiente ciclo
+        scheduleNextCycle();
+
+      }, 400);
+
+    }, 100);
+
+  }, 800);
 }
 
-/* ================= WATCHDOG (ANTI BLACK SCREEN) ================= */
-function watchdog(){
-  const visible = (activeFrame === "A") ? frameA : frameB;
+/* ================= PROGRAMACIÓN DE CICLOS ================= */
+function scheduleNextCycle(){
+  clearTimeout(preloadTimer);
+  clearTimeout(swapTimer);
 
-  const src = (visible.getAttribute("src") || "").toLowerCase();
-  const looksBad = (!src || src.includes("about:blank"));
-
-  const tooLong = (Date.now() - lastVisibleOkTs) > (SWAP_INTERVAL_MS + 20000);
-
-  if (looksBad || tooLong) {
-    // refresca el reporte actual visible
-    const url = links[biIndex];
-    visible.src = cacheBust(url);
-    lastVisibleOkTs = Date.now();
-  }
+  // Precargar 10s antes del swap
+  preloadTimer = setTimeout(startPreload, PRELOAD_START_MS);
+  
+  // Ejecutar swap
+  swapTimer = setTimeout(swapBI, SWAP_INTERVAL_MS);
 }
 
 /* ================= INIT ================= */
-frameA.src = cacheBust(links[0]);
+frameA.src = links[0];
 subtitle.textContent = subtitles[0];
 buildCarousel(images[0]);
 
-frameA.addEventListener("load", () => { if (activeFrame === "A") lastVisibleOkTs = Date.now(); });
-frameB.addEventListener("load", () => { if (activeFrame === "B") lastVisibleOkTs = Date.now(); });
+frameA.addEventListener("load", () => {
+  loading.style.display = "none";
+  scheduleNextCycle();
+}, { once: true });
 
-setInterval(swapBI, SWAP_INTERVAL_MS);
-setInterval(watchdog, WATCHDOG_MS);
-
-/* ================= PARTICLES ================= */
+/* ================= PARTICLES (REDUCIDAS) ================= */
 const canvas = document.getElementById("particles");
 const ctx = canvas.getContext("2d");
 
@@ -392,13 +560,13 @@ resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
 
 let particles = [];
-for (let i = 0; i < 50; i++) {
+for (let i = 0; i < 30; i++) {
   particles.push({
     x: Math.random() * canvas.width,
     y: Math.random() * canvas.height,
-    vx: (Math.random() - 0.5) * 2,
-    vy: (Math.random() - 0.5) * 2,
-    size: Math.random() * 3 + 1,
+    vx: (Math.random() - 0.5) * 1.5,
+    vy: (Math.random() - 0.5) * 1.5,
+    size: Math.random() * 2.5 + 1,
     color: Math.random() > 0.5 ? "#00ffff" : "#ff00ff"
   });
 }
@@ -420,6 +588,16 @@ function animateParticles(){
   requestAnimationFrame(animateParticles);
 }
 animateParticles();
+
+/* ================= ERROR RECOVERY ================= */
+window.addEventListener("error", (e) => {
+  console.error("Error detectado:", e);
+  if (isSwapping) {
+    isSwapping = false;
+    loading.style.display = "none";
+    overlay.classList.remove("visible");
+  }
+});
 </script>
 
 </body>
