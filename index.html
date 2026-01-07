@@ -47,44 +47,53 @@ body::before{
     height: 105%;
     border: none;
     opacity: 0;
-    transition: opacity 1s ease, transform 1s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 1;
-    will-change: opacity, transform;
-    transform: scale(0.95);
+    transition: opacity 0.6s ease;
 }
 .visible{ 
     opacity: 1; 
     z-index: 2;
-    transform: scale(1);
 }
 
-/* ================= OVERLAY ================= */
+/* ================= OVERLAY MINIMALISTA ================= */
 #overlay{
     position: fixed;
-    inset: 0;
-    background: radial-gradient(circle at center, rgba(0,20,40,0.95), rgba(0,0,0,0.98));
-    z-index: 5;
-    display: none;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, 
+        rgba(0,20,40,0.96) 0%, 
+        rgba(10,10,30,0.98) 50%,
+        rgba(0,0,0,0.97) 100%);
+    z-index: 10;
+    display: flex;
     align-items: center;
     justify-content: center;
     opacity: 0;
-    transition: opacity 0.5s ease;
-    backdrop-filter: blur(0px);
+    pointer-events: none;
+    transition: opacity 0.4s ease;
 }
 #overlay.visible{ 
-    display: flex;
     opacity: 1;
-    backdrop-filter: blur(10px);
-    animation: overlayPulse 2s ease-in-out;
-}
-
-@keyframes overlayPulse{
-    0%, 100%{ transform: scale(1); }
-    50%{ transform: scale(1.02); }
+    pointer-events: all;
 }
 
 /* ================= CARD ================= */
-#card{ text-align:center; }
+#card{ 
+    text-align:center;
+    transform: translateY(0);
+    transition: transform 0.4s ease;
+}
+
+#overlay.visible #card{
+    animation: cardPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes cardPop{
+    0%{ transform: scale(0.9) translateY(20px); opacity: 0; }
+    100%{ transform: scale(1) translateY(0); opacity: 1; }
+}
 
 #title{
     font-size: 3.5vw;
@@ -93,31 +102,8 @@ body::before{
     color: #00ffff;
     text-shadow: 
         0 0 20px rgba(0,255,255,0.8),
-        0 0 40px rgba(0,255,255,0.6),
-        0 0 60px rgba(0,255,255,0.4),
-        0 0 80px rgba(0,255,255,0.2);
-    animation: titleEnter 1.5s ease-out, glitchSubtle 3s infinite;
+        0 0 40px rgba(0,255,255,0.5);
     text-transform: uppercase;
-}
-
-@keyframes titleEnter{
-    0%{ 
-        opacity: 0; 
-        transform: translateY(-30px) scale(0.8);
-        letter-spacing: 20px;
-    }
-    100%{ 
-        opacity: 1; 
-        transform: translateY(0) scale(1);
-        letter-spacing: 8px;
-    }
-}
-
-@keyframes glitchSubtle{
-    0%,100%{ transform: translate(0) scale(1); }
-    25%{ transform: translate(-1px,1px) scale(1); }
-    50%{ transform: translate(1px,-1px) scale(1.01); }
-    75%{ transform: translate(-1px,-1px) scale(1); }
 }
 
 #subtitle{
@@ -131,19 +117,8 @@ body::before{
     -webkit-text-fill-color: transparent;
     background-clip: text;
     margin: 25px 0 50px;
-    animation: subtitleSlide 1.2s ease-out, gradientFlow 4s linear infinite;
+    animation: gradientFlow 3s linear infinite;
     text-transform: uppercase;
-}
-
-@keyframes subtitleSlide{
-    0%{ 
-        opacity: 0; 
-        transform: translateX(-50px);
-    }
-    100%{ 
-        opacity: 1; 
-        transform: translateX(0);
-    }
 }
 
 @keyframes gradientFlow{
@@ -162,8 +137,7 @@ body::before{
 #track{
     display:flex;
     gap:24px;
-    transition: transform 1.5s ease-in-out;
-    will-change: transform;
+    transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .item{
@@ -172,13 +146,12 @@ body::before{
     border-radius: 16px;
     overflow: hidden;
     background: linear-gradient(135deg, #1a1a2e, #0f0f1e);
-    opacity: 0.4;
-    filter: blur(2px) grayscale(50%);
-    transform: scale(0.88);
-    transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0.5;
+    filter: grayscale(60%);
+    transform: scale(0.9);
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     box-shadow: 0 8px 24px rgba(0,0,0,0.3);
     border: 2px solid rgba(0,255,255,0.1);
-    will-change: transform, opacity;
     position: relative;
 }
 
@@ -186,19 +159,18 @@ body::before{
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(0,255,255,0.1), transparent);
+    background: linear-gradient(135deg, rgba(0,255,255,0.15), transparent);
     opacity: 0;
-    transition: opacity 0.8s ease;
+    transition: opacity 0.6s ease;
 }
 
 .item.active{
     opacity: 1;
-    filter: blur(0) grayscale(0%);
-    transform: scale(1.12);
+    filter: grayscale(0%);
+    transform: scale(1.1);
     box-shadow: 
-        0 25px 50px rgba(0,0,0,0.4), 
-        0 0 40px rgba(0,255,255,0.4),
-        inset 0 0 30px rgba(0,255,255,0.1);
+        0 20px 45px rgba(0,0,0,0.4), 
+        0 0 35px rgba(0,255,255,0.5);
     border-color: #00ffff;
     border-width: 3px;
 }
@@ -208,9 +180,9 @@ body::before{
 }
 
 .item.fading{
-    opacity: 0;
-    filter: blur(5px) grayscale(100%);
-    transform: scale(0.75) rotateY(15deg);
+    opacity: 0.3;
+    filter: grayscale(80%);
+    transform: scale(0.85);
 }
 
 .item img{
@@ -219,54 +191,79 @@ body::before{
     object-fit: cover;
 }
 
+/* Corner accents */
+.corner-accent{
+    position: fixed;
+    width: 150px;
+    height: 150px;
+    z-index: 11;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+#overlay.visible .corner-accent{
+    opacity: 0.6;
+}
+
+.corner-accent.tl{
+    top: 0;
+    left: 0;
+    border-top: 3px solid #00ffff;
+    border-left: 3px solid #00ffff;
+}
+
+.corner-accent.tr{
+    top: 0;
+    right: 0;
+    border-top: 3px solid #ff00ff;
+    border-right: 3px solid #ff00ff;
+}
+
+.corner-accent.bl{
+    bottom: 0;
+    left: 0;
+    border-bottom: 3px solid #ff00ff;
+    border-left: 3px solid #ff00ff;
+}
+
+.corner-accent.br{
+    bottom: 0;
+    right: 0;
+    border-bottom: 3px solid #00ffff;
+    border-right: 3px solid #00ffff;
+}
+
 /* Loading indicator */
 #loading{
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 10;
+    bottom: 40px;
+    right: 40px;
+    z-index: 15;
     display: none;
     color: #00ffff;
-    font-size: 1.8vw;
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff;
-    animation: pulse 1.5s ease-in-out infinite;
-}
-
-@keyframes pulse{
-    0%, 100%{ opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
-    50%{ opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
-}
-
-/* Hex grid background */
-#overlay::before{
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: 
-        linear-gradient(30deg, rgba(0,255,255,0.02) 12%, transparent 12.5%, transparent 87%, rgba(0,255,255,0.02) 87.5%, rgba(0,255,255,0.02)),
-        linear-gradient(150deg, rgba(0,255,255,0.02) 12%, transparent 12.5%, transparent 87%, rgba(0,255,255,0.02) 87.5%, rgba(0,255,255,0.02)),
-        linear-gradient(30deg, rgba(0,255,255,0.02) 12%, transparent 12.5%, transparent 87%, rgba(0,255,255,0.02) 87.5%, rgba(0,255,255,0.02)),
-        linear-gradient(150deg, rgba(0,255,255,0.02) 12%, transparent 12.5%, transparent 87%, rgba(0,255,255,0.02) 87.5%, rgba(0,255,255,0.02));
-    background-size: 80px 140px;
-    background-position: 0 0, 0 0, 40px 70px, 40px 70px;
-    opacity: 0;
-    animation: hexFade 2s ease-in forwards;
-}
-
-@keyframes hexFade{
-    to{ opacity: 1; }
+    font-size: 1.2vw;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-shadow: 0 0 15px #00ffff;
+    padding: 15px 30px;
+    background: rgba(0,20,40,0.8);
+    border: 2px solid #00ffff;
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
 }
 </style>
 </head>
 
 <body>
 
-<div id="loading">Cargando...</div>
+<div id="loading">● CARGANDO</div>
 
 <div id="overlay">
+  <div class="corner-accent tl"></div>
+  <div class="corner-accent tr"></div>
+  <div class="corner-accent bl"></div>
+  <div class="corner-accent br"></div>
+  
   <div id="card">
     <div id="title">CULTURA DE COSTURA</div>
     <div id="subtitle"></div>
@@ -308,10 +305,10 @@ const subtitles = [
 ];
 
 /* ================= CONFIGURACIÓN OPTIMIZADA ================= */
-const SWAP_INTERVAL_MS   = 55000;  // 55 segundos entre reportes
-const PRELOAD_START_MS   = 45000;  // Inicia precarga 10s antes
-const PRELOAD_TIMEOUT_MS = 35000;  // Timeout generoso de 35s
-const MAX_RETRIES        = 3;
+const SWAP_INTERVAL_MS   = 60000;  // 1 minuto entre reportes
+const PRELOAD_START_MS   = 50000;  // Precarga 10s antes
+const PRELOAD_TIMEOUT_MS = 40000;  // 40s timeout
+const MAX_RETRIES        = 2;
 
 /* ================= STATE ================= */
 let biIndex = 0;
@@ -365,7 +362,7 @@ function rotateHero(){
 
     const centerOffset = Math.max(0, slideIndex - 1) * 244;
     track.style.transform = `translateX(-${centerOffset}px)`;
-  }, 600);
+  }, 500);
 }
 
 /* ================= HELPERS ================= */
@@ -391,7 +388,7 @@ function startPreload(){
     incoming.removeEventListener("load", onLoad);
     nextFrameReady = true;
     isPreloading = false;
-    console.log(`✓ Reporte ${nextIndex} precargado`);
+    console.log(`✓ Reporte ${nextIndex + 1} listo`);
   };
 
   incoming.addEventListener("load", onLoad);
@@ -404,11 +401,11 @@ function startPreload(){
     
     retryCount++;
     if (retryCount < MAX_RETRIES) {
-      console.log(`⚠ Reintentando carga (${retryCount}/${MAX_RETRIES})`);
+      console.log(`⚠ Reintento ${retryCount}/${MAX_RETRIES}`);
       isPreloading = false;
-      setTimeout(startPreload, 2000);
+      setTimeout(startPreload, 3000);
     } else {
-      console.log("✗ Max reintentos alcanzado");
+      console.log("✗ Saltando reporte");
       nextFrameReady = false;
       isPreloading = false;
       retryCount = 0;
@@ -416,23 +413,20 @@ function startPreload(){
   }, PRELOAD_TIMEOUT_MS);
 }
 
-/* ================= SWAP OPTIMIZADO ================= */
+/* ================= SWAP SUAVE Y RÁPIDO ================= */
 function swapBI(){
   if (isSwapping) return;
   
-  // Si no está listo, intenta precargar ahora
   if (!nextFrameReady) {
-    console.log("Frame no listo, forzando precarga...");
+    console.log("Forzando precarga...");
     loading.style.display = "block";
     startPreload();
     
-    // Espera máximo 15s más
     setTimeout(() => {
       if (nextFrameReady) {
         executeSwap();
       } else {
-        // Saltar al siguiente
-        console.log("Saltando reporte problemático");
+        console.log("Saltando al siguiente");
         biIndex = (biIndex + 1) % links.length;
         loading.style.display = "none";
         scheduleNextCycle();
@@ -451,79 +445,39 @@ function executeSwap(){
   const incoming = getIncomingFrame();
   const outgoing = getOutgoingFrame();
 
-  // Efecto de barrido digital
-  const scanline = document.createElement("div");
-  scanline.style.cssText = `
-    position: fixed;
-    inset: 0;
-    background: linear-gradient(
-      180deg,
-      transparent 0%,
-      rgba(0,255,255,0.15) 45%,
-      rgba(0,255,255,0.3) 50%,
-      rgba(0,255,255,0.15) 55%,
-      transparent 100%
-    );
-    z-index: 4;
-    animation: scanDown 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-    pointer-events: none;
-  `;
-  document.body.appendChild(scanline);
-
-  const style = document.createElement("style");
-  style.textContent = `
-    @keyframes scanDown{
-      0%{ transform: translateY(-100%); opacity: 0; }
-      50%{ opacity: 1; }
-      100%{ transform: translateY(100%); opacity: 0; }
-    }
-  `;
-  document.head.appendChild(style);
-
-  setTimeout(() => {
-    scanline.remove();
-    style.remove();
-  }, 1200);
-
-  // Mostrar overlay con animación
+  // CLAVE: Mostrar overlay ANTES de hacer el swap
   overlay.classList.add("visible");
 
   setTimeout(() => {
+    // Actualizar índice y contenido
     biIndex = (biIndex + 1) % links.length;
-    
     subtitle.textContent = subtitles[biIndex] || "";
     buildCarousel(images[biIndex] || images[0]);
 
-    // Swap con escala
-    incoming.style.transform = "scale(0.95)";
-    incoming.classList.add("visible");
-    
+    // SWAP RÁPIDO: El nuevo ya está cargado, solo cambiar opacidad
     setTimeout(() => {
-      incoming.style.transform = "scale(1)";
-      outgoing.style.transform = "scale(1.05)";
-      outgoing.classList.remove("visible");
+      incoming.classList.add("visible");
       
       setTimeout(() => {
-        outgoing.style.transform = "scale(0.95)";
+        outgoing.classList.remove("visible");
         activeFrame = activeFrame === "A" ? "B" : "A";
         
         // Ocultar overlay
         setTimeout(() => {
           overlay.classList.remove("visible");
-        }, 600);
+        }, 500);
 
         nextFrameReady = false;
         retryCount = 0;
         isSwapping = false;
 
-        // Programar siguiente ciclo
         scheduleNextCycle();
 
-      }, 400);
+      }, 600); // Espera que se vea el fade in
 
-    }, 100);
+    }, 300); // Pequeña pausa para mostrar overlay
 
-  }, 800);
+  }, 500); // Tiempo para overlay visible
 }
 
 /* ================= PROGRAMACIÓN DE CICLOS ================= */
@@ -531,10 +485,7 @@ function scheduleNextCycle(){
   clearTimeout(preloadTimer);
   clearTimeout(swapTimer);
 
-  // Precargar 10s antes del swap
   preloadTimer = setTimeout(startPreload, PRELOAD_START_MS);
-  
-  // Ejecutar swap
   swapTimer = setTimeout(swapBI, SWAP_INTERVAL_MS);
 }
 
@@ -548,7 +499,7 @@ frameA.addEventListener("load", () => {
   scheduleNextCycle();
 }, { once: true });
 
-/* ================= PARTICLES (REDUCIDAS) ================= */
+/* ================= PARTICLES OPTIMIZADAS ================= */
 const canvas = document.getElementById("particles");
 const ctx = canvas.getContext("2d");
 
@@ -560,13 +511,13 @@ resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
 
 let particles = [];
-for (let i = 0; i < 30; i++) {
+for (let i = 0; i < 25; i++) {
   particles.push({
     x: Math.random() * canvas.width,
     y: Math.random() * canvas.height,
-    vx: (Math.random() - 0.5) * 1.5,
-    vy: (Math.random() - 0.5) * 1.5,
-    size: Math.random() * 2.5 + 1,
+    vx: (Math.random() - 0.5) * 1.2,
+    vy: (Math.random() - 0.5) * 1.2,
+    size: Math.random() * 2 + 1,
     color: Math.random() > 0.5 ? "#00ffff" : "#ff00ff"
   });
 }
@@ -591,7 +542,7 @@ animateParticles();
 
 /* ================= ERROR RECOVERY ================= */
 window.addEventListener("error", (e) => {
-  console.error("Error detectado:", e);
+  console.error("Error:", e.message);
   if (isSwapping) {
     isSwapping = false;
     loading.style.display = "none";
