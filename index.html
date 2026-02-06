@@ -48,10 +48,10 @@ body::before{
     border: none;
     opacity: 0;
     z-index: 1;
-    transition: opacity 0.6s ease;
+    transition: opacity 0.9s ease; /* más suave */
 }
-.visible{ 
-    opacity: 1; 
+.visible{
+    opacity: 1;
     z-index: 2;
 }
 
@@ -62,8 +62,8 @@ body::before{
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, 
-        rgba(0,20,40,0.96) 0%, 
+    background: linear-gradient(135deg,
+        rgba(0,20,40,0.96) 0%,
         rgba(10,10,30,0.98) 50%,
         rgba(0,0,0,0.97) 100%);
     z-index: 10;
@@ -72,22 +72,22 @@ body::before{
     justify-content: center;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.45s ease;
 }
-#overlay.visible{ 
+#overlay.visible{
     opacity: 1;
     pointer-events: all;
 }
 
 /* ================= CARD ================= */
-#card{ 
+#card{
     text-align:center;
     transform: translateY(0);
     transition: transform 0.4s ease;
 }
 
 #overlay.visible #card{
-    animation: cardPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: cardPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 @keyframes cardPop{
@@ -100,7 +100,7 @@ body::before{
     font-weight: 900;
     letter-spacing: 8px;
     color: #00ffff;
-    text-shadow: 
+    text-shadow:
         0 0 20px rgba(0,255,255,0.8),
         0 0 40px rgba(0,255,255,0.5);
     text-transform: uppercase;
@@ -137,7 +137,7 @@ body::before{
 #track{
     display:flex;
     gap:24px;
-    transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: transform 1.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* más suave */
 }
 
 .item{
@@ -168,16 +168,14 @@ body::before{
     opacity: 1;
     filter: grayscale(0%);
     transform: scale(1.1);
-    box-shadow: 
-        0 20px 45px rgba(0,0,0,0.4), 
+    box-shadow:
+        0 20px 45px rgba(0,0,0,0.4),
         0 0 35px rgba(0,255,255,0.5);
     border-color: #00ffff;
     border-width: 3px;
 }
 
-.item.active::before{
-    opacity: 1;
-}
+.item.active::before{ opacity: 1; }
 
 .item.fading{
     opacity: 0.3;
@@ -200,35 +198,25 @@ body::before{
     opacity: 0;
     transition: opacity 0.4s ease;
 }
-
-#overlay.visible .corner-accent{
-    opacity: 0.6;
-}
+#overlay.visible .corner-accent{ opacity: 0.6; }
 
 .corner-accent.tl{
-    top: 0;
-    left: 0;
+    top: 0; left: 0;
     border-top: 3px solid #00ffff;
     border-left: 3px solid #00ffff;
 }
-
 .corner-accent.tr{
-    top: 0;
-    right: 0;
+    top: 0; right: 0;
     border-top: 3px solid #ff00ff;
     border-right: 3px solid #ff00ff;
 }
-
 .corner-accent.bl{
-    bottom: 0;
-    left: 0;
+    bottom: 0; left: 0;
     border-bottom: 3px solid #ff00ff;
     border-left: 3px solid #ff00ff;
 }
-
 .corner-accent.br{
-    bottom: 0;
-    right: 0;
+    bottom: 0; right: 0;
     border-bottom: 3px solid #00ffff;
     border-right: 3px solid #00ffff;
 }
@@ -263,7 +251,7 @@ body::before{
   <div class="corner-accent tr"></div>
   <div class="corner-accent bl"></div>
   <div class="corner-accent br"></div>
-  
+
   <div id="card">
     <div id="title">CULTURA DE COSTURA</div>
     <div id="subtitle"></div>
@@ -289,10 +277,10 @@ const links = [
 ];
 
 const images = [
-  ["img/productividad.jpg","img/trabajo en equipo.jpg","img/calidad.jpg","img/empatia.jpg","img/obsesion por el cliente.jpg","img/orientacion a resultados.jpg"],
+  ["img/productividad.jpg","img/trabajo en equipo.jpg","img/calidad.jpg","img/Empatia.jpg","img/obsesion por el cliente.jpg","img/orientacion a resultados.jpg"],
   ["img/trabajo en equipo.jpg","img/obsesion por el cliente.jpg","img/orientacion a resultados.jpg"],
-  ["img/productividad.jpg","img/calidad.jpg","img/empatia.jpg"],
-  ["img/calidad.jpg","img/orientacion a resultados.jpg","img/empatia.jpg"],
+  ["img/productividad.jpg","img/calidad.jpg","img/Empatia.jpg"],
+  ["img/calidad.jpg","img/orientacion a resultados.jpg","img/Empatia.jpg"],
   ["img/productividad.jpg","img/trabajo en equipo.jpg","img/obsesion por el cliente.jpg"]
 ];
 
@@ -304,11 +292,22 @@ const subtitles = [
   "CULTURA Y DISCIPLINA"
 ];
 
-/* ================= CONFIGURACIÓN OPTIMIZADA ================= */
-const SWAP_INTERVAL_MS   = 60000;  // 1 minuto entre reportes
-const PRELOAD_START_MS   = 50000;  // Precarga 10s antes
-const PRELOAD_TIMEOUT_MS = 40000;  // 40s timeout
+/* ================= CONFIG ================= */
+const SWAP_INTERVAL_MS   = 60000;  // 1 minuto
+const PRELOAD_START_MS   = 50000;  // precarga 10s antes
+const PRELOAD_TIMEOUT_MS = 45000;  // más tolerancia
 const MAX_RETRIES        = 2;
+
+/* ✅ overlay más largo y mejor */
+const OVERLAY_SHOW_MS    = 900;    // antes 500
+const OVERLAY_EXTRA_MS   = 2000;   // +2s extra
+const FADE_IN_MS         = 900;    // antes 600
+
+/* ✅ carrusel más lento (se aprecia más) */
+const HERO_INTERVAL_MS   = 5000;   // antes 3500
+
+/* ✅ refresh preventivo (reduce pantallas blancas en TVs) */
+const PREVENTIVE_REFRESH_MS = 3600000; // 1h
 
 /* ================= STATE ================= */
 let biIndex = 0;
@@ -331,7 +330,7 @@ const track = document.getElementById("track");
 const subtitle = document.getElementById("subtitle");
 const loading = document.getElementById("loading");
 
-/* ================= BUILD CAROUSEL ================= */
+/* ================= CAROUSEL ================= */
 function buildCarousel(set){
   clearInterval(heroTimer);
   track.innerHTML = "";
@@ -345,16 +344,15 @@ function buildCarousel(set){
   });
 
   track.style.transform = "translateX(0)";
-  heroTimer = setInterval(rotateHero, 3500);
+  heroTimer = setInterval(rotateHero, HERO_INTERVAL_MS);
 }
 
-/* ================= ROTATE HERO ================= */
 function rotateHero(){
   const items = document.querySelectorAll(".item");
   if (!items.length) return;
 
   items[slideIndex].classList.add("fading");
-  
+
   setTimeout(() => {
     items[slideIndex].classList.remove("active","fading");
     slideIndex = (slideIndex + 1) % items.length;
@@ -369,7 +367,30 @@ function rotateHero(){
 function getIncomingFrame(){ return activeFrame === "A" ? frameB : frameA; }
 function getOutgoingFrame(){ return activeFrame === "A" ? frameA : frameB; }
 
-/* ================= PRELOAD ANTICIPADO ================= */
+/* ✅ espera extra de load antes de swap (reduce blanco) */
+function waitFrameLoad(frame, timeout=8000){
+  return new Promise((resolve) => {
+    let done = false;
+
+    const onLoad = () => {
+      if (done) return;
+      done = true;
+      frame.removeEventListener("load", onLoad);
+      resolve(true);
+    };
+
+    frame.addEventListener("load", onLoad);
+
+    setTimeout(() => {
+      if (done) return;
+      done = true;
+      frame.removeEventListener("load", onLoad);
+      resolve(false);
+    }, timeout);
+  });
+}
+
+/* ================= PRELOAD ================= */
 function startPreload(){
   if (isPreloading || isSwapping) return;
   isPreloading = true;
@@ -398,14 +419,14 @@ function startPreload(){
     if (loaded) return;
     loaded = true;
     incoming.removeEventListener("load", onLoad);
-    
+
     retryCount++;
     if (retryCount < MAX_RETRIES) {
       console.log(`⚠ Reintento ${retryCount}/${MAX_RETRIES}`);
       isPreloading = false;
       setTimeout(startPreload, 3000);
     } else {
-      console.log("✗ Saltando reporte");
+      console.log("✗ Saltando reporte (precarga falló)");
       nextFrameReady = false;
       isPreloading = false;
       retryCount = 0;
@@ -413,19 +434,18 @@ function startPreload(){
   }, PRELOAD_TIMEOUT_MS);
 }
 
-/* ================= SWAP SUAVE Y RÁPIDO ================= */
-function swapBI(){
+/* ================= SWAP ================= */
+async function swapBI(){
   if (isSwapping) return;
-  
+
   if (!nextFrameReady) {
     console.log("Forzando precarga...");
     loading.style.display = "block";
     startPreload();
-    
+
     setTimeout(() => {
-      if (nextFrameReady) {
-        executeSwap();
-      } else {
+      if (nextFrameReady) executeSwap();
+      else {
         console.log("Saltando al siguiente");
         biIndex = (biIndex + 1) % links.length;
         loading.style.display = "none";
@@ -434,6 +454,10 @@ function swapBI(){
     }, 15000);
     return;
   }
+
+  // ✅ extra seguridad: esperar un load final corto
+  const incoming = getIncomingFrame();
+  await waitFrameLoad(incoming, 8000);
 
   executeSwap();
 }
@@ -445,42 +469,43 @@ function executeSwap(){
   const incoming = getIncomingFrame();
   const outgoing = getOutgoingFrame();
 
-  // CLAVE: Mostrar overlay ANTES de hacer el swap
+  // 1) overlay visible
   overlay.classList.add("visible");
 
   setTimeout(() => {
-    // Actualizar índice y contenido
+    // 2) actualizar texto e imágenes
     biIndex = (biIndex + 1) % links.length;
     subtitle.textContent = subtitles[biIndex] || "";
     buildCarousel(images[biIndex] || images[0]);
 
-    // SWAP RÁPIDO: El nuevo ya está cargado, solo cambiar opacidad
+    // 3) fade-in incoming
     setTimeout(() => {
       incoming.classList.add("visible");
-      
+
+      // 4) apagar outgoing
       setTimeout(() => {
         outgoing.classList.remove("visible");
         activeFrame = activeFrame === "A" ? "B" : "A";
-        
-        // Ocultar overlay
+
+        // 5) overlay dura +2s extra
         setTimeout(() => {
           overlay.classList.remove("visible");
-        }, 500);
 
-        nextFrameReady = false;
-        retryCount = 0;
-        isSwapping = false;
+          nextFrameReady = false;
+          retryCount = 0;
+          isSwapping = false;
 
-        scheduleNextCycle();
+          scheduleNextCycle();
+        }, OVERLAY_EXTRA_MS);
 
-      }, 600); // Espera que se vea el fade in
+      }, FADE_IN_MS);
 
-    }, 300); // Pequeña pausa para mostrar overlay
+    }, 250);
 
-  }, 500); // Tiempo para overlay visible
+  }, OVERLAY_SHOW_MS);
 }
 
-/* ================= PROGRAMACIÓN DE CICLOS ================= */
+/* ================= CYCLE ================= */
 function scheduleNextCycle(){
   clearTimeout(preloadTimer);
   clearTimeout(swapTimer);
@@ -499,7 +524,15 @@ frameA.addEventListener("load", () => {
   scheduleNextCycle();
 }, { once: true });
 
-/* ================= PARTICLES OPTIMIZADAS ================= */
+/* ✅ refresh preventivo 1 vez por hora (menos “blancos” en TV) */
+setInterval(() => {
+  if (isSwapping) return;
+  const visibleFrame = getOutgoingFrame();
+  visibleFrame.src = links[biIndex];
+  console.log("↻ Refresh preventivo del reporte visible");
+}, PREVENTIVE_REFRESH_MS);
+
+/* ================= PARTICLES ================= */
 const canvas = document.getElementById("particles");
 const ctx = canvas.getContext("2d");
 
