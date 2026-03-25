@@ -9,7 +9,7 @@ html, body {
     margin: 0;
     padding: 0;
     height: 100%;
-    background: #0a0a12;
+    background: #050510;
     overflow: hidden;
     font-family: "Segoe UI", system-ui, sans-serif;
 }
@@ -24,30 +24,30 @@ html, body {
     border: none;
     opacity: 0;
     z-index: 1;
-    transition: opacity 1.2s ease;
+    transition: opacity 1.5s ease;
 }
-.visible{
+
+.iframe.visible{
     opacity: 1;
     z-index: 2;
 }
 
-/* ================= OVERLAY LIGERO ================= */
+/* ================= OVERLAY ================= */
 #overlay{
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(ellipse at center,
-        rgba(0,20,40,0.97) 0%,
-        rgba(5,5,15,0.99) 100%);
+    background: linear-gradient(180deg, #050510 0%, #0a1628 100%);
     z-index: 10;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.8s ease;
+    transition: opacity 0.7s ease;
 }
 
 #overlay.visible{
@@ -55,143 +55,112 @@ html, body {
     pointer-events: all;
 }
 
-/* ================= CARD ================= */
-#card{
-    text-align: center;
-    opacity: 0;
-    transform: scale(0.98);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-#overlay.visible #card{
-    opacity: 1;
-    transform: scale(1);
-}
-
+/* ================= TÍTULO ================= */
 #title{
-    font-size: 3.5vw;
+    font-size: 3.8vw;
     font-weight: 900;
-    letter-spacing: 8px;
-    color: #00ffff;
-    text-shadow:
-        0 0 30px rgba(0,255,255,0.6),
-        0 0 60px rgba(0,255,255,0.3);
+    letter-spacing: 10px;
+    color: #00d4ff;
     text-transform: uppercase;
+    text-align: center;
+    text-shadow: 0 0 40px rgba(0,212,255,0.4);
 }
 
 #subtitle{
-    font-size: 1.4vw;
-    letter-spacing: 4px;
+    font-size: 1.5vw;
+    letter-spacing: 5px;
     font-weight: 600;
     color: #a0a0ff;
-    margin: 25px 0 50px;
+    margin-top: 15px;
+    margin-bottom: 50px;
     text-transform: uppercase;
-    text-shadow: 0 0 20px rgba(160,160,255,0.5);
+    text-align: center;
 }
 
-/* ================= CAROUSEL ================= */
-#carousel{
-    width: 1200px;
-    height: 260px;
-    overflow: hidden;
-    margin: auto;
-    position: relative;
-}
-
-#track{
+/* ================= IMÁGENES FIJAS ================= */
+#images{
     display: flex;
-    gap: 24px;
-    transition: transform 1.5s ease;
+    gap: 30px;
+    justify-content: center;
+    align-items: center;
 }
 
-.item{
-    width: 220px;
-    height: 240px;
+.img-card{
+    width: 200px;
+    height: 220px;
     border-radius: 16px;
     overflow: hidden;
-    background: #1a1a2e;
-    opacity: 0.4;
-    filter: grayscale(50%) brightness(0.7);
-    transform: scale(0.9);
-    transition: all 0.8s ease;
-    border: 2px solid rgba(0,255,255,0.2);
+    border: 3px solid rgba(0,212,255,0.4);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
-.item.active{
-    opacity: 1;
-    filter: grayscale(0%) brightness(1);
-    transform: scale(1.08);
-    border-color: #00ffff;
-    box-shadow: 0 0 30px rgba(0,255,255,0.4);
-}
-
-.item.fading{
-    opacity: 0.3;
-    filter: grayscale(70%) brightness(0.5);
-    transform: scale(0.85);
-}
-
-.item img{
+.img-card img{
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-/* ================= CORNER GLOW (ligero) ================= */
-.corner{
+/* Imagen central más destacada */
+.img-card.center{
+    width: 220px;
+    height: 240px;
+    border-color: #00d4ff;
+    box-shadow: 0 0 30px rgba(0,212,255,0.3);
+}
+
+/* ================= INDICADOR ================= */
+#indicator{
     position: fixed;
-    width: 120px;
-    height: 120px;
+    bottom: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 14px;
     z-index: 11;
     opacity: 0;
     transition: opacity 0.5s ease;
 }
 
-#overlay.visible .corner{
-    opacity: 0.7;
+#overlay.visible #indicator{
+    opacity: 1;
 }
 
-.corner.tl{ top: 20px; left: 20px; border-top: 2px solid #00ffff; border-left: 2px solid #00ffff; }
-.corner.tr{ top: 20px; right: 20px; border-top: 2px solid #ff00ff; border-right: 2px solid #ff00ff; }
-.corner.bl{ bottom: 20px; left: 20px; border-bottom: 2px solid #ff00ff; border-left: 2px solid #ff00ff; }
-.corner.br{ bottom: 20px; right: 20px; border-bottom: 2px solid #00ffff; border-right: 2px solid #00ffff; }
+.dot{
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #333;
+    transition: background 0.3s ease;
+}
+
+.dot.active{
+    background: #00d4ff;
+}
 
 /* ================= LOADING ================= */
 #loading{
     position: fixed;
-    bottom: 40px;
-    right: 40px;
+    bottom: 30px;
+    right: 30px;
     z-index: 15;
     display: none;
-    color: #00ffff;
-    font-size: 1.2vw;
+    color: #00d4ff;
+    font-size: 1vw;
     font-weight: 600;
     letter-spacing: 2px;
-    padding: 15px 30px;
-    background: rgba(0,20,40,0.9);
-    border: 1px solid #00ffff;
-    border-radius: 8px;
 }
 </style>
 </head>
 
 <body>
 
-<div id="loading">● CARGANDO</div>
+<div id="loading">CARGANDO...</div>
 
 <div id="overlay">
-    <div class="corner tl"></div>
-    <div class="corner tr"></div>
-    <div class="corner bl"></div>
-    <div class="corner br"></div>
-
-    <div id="card">
-        <div id="title">CULTURA DE COSTURA</div>
-        <div id="subtitle"></div>
-        <div id="carousel">
-            <div id="track"></div>
-        </div>
-    </div>
+    <div id="title">CULTURA DE COSTURA</div>
+    <div id="subtitle"></div>
+    <div id="images"></div>
+    <div id="indicator"></div>
 </div>
 
 <iframe id="frameA" class="iframe visible"></iframe>
@@ -207,14 +176,6 @@ const links = [
     "https://app.powerbi.com/view?r=eyJrIjoiMDhlOWZmZGQtZWNlMS00NmY4LWJjM2EtYTdkZjdiNjQ0YWU2IiwidCI6IjU0NmM0MjUzLTY3NTQtNGYwNC05OWRiLTY5MWMyMDQ2YjJlYyIsImMiOjR9"
 ];
 
-const images = [
-    ["img/productividad.jpg","img/trabajo en equipo.jpg","img/calidad.jpg","img/Empatia.jpg","img/obsesion por el cliente.jpg","img/orientacion a resultados.jpg"],
-    ["img/trabajo en equipo.jpg","img/obsesion por el cliente.jpg","img/orientacion a resultados.jpg"],
-    ["img/productividad.jpg","img/calidad.jpg","img/Empatia.jpg"],
-    ["img/calidad.jpg","img/orientacion a resultados.jpg","img/Empatia.jpg"],
-    ["img/productividad.jpg","img/trabajo en equipo.jpg","img/obsesion por el cliente.jpg"]
-];
-
 const subtitles = [
     "VISIÓN INTEGRAL DE DESEMPEÑO",
     "ENFOQUE SEMANAL DE RESULTADOS",
@@ -223,69 +184,64 @@ const subtitles = [
     "CULTURA Y DISCIPLINA"
 ];
 
-/* ================= CONFIG OPTIMIZADO TV ================= */
-const SWAP_INTERVAL_MS   = 20000;  // 20 segundos
-const PRELOAD_START_MS   = 12000;  // precarga a los 12s
-const PRELOAD_TIMEOUT_MS = 15000;
-const MAX_RETRIES        = 2;
+// 3 imágenes por reporte (sin rotación)
+const images = [
+    ["img/productividad.jpg", "img/calidad.jpg", "img/trabajo en equipo.jpg"],
+    ["img/trabajo en equipo.jpg", "img/obsesion por el cliente.jpg", "img/orientacion a resultados.jpg"],
+    ["img/productividad.jpg", "img/Empatia.jpg", "img/calidad.jpg"],
+    ["img/calidad.jpg", "img/orientacion a resultados.jpg", "img/Empatia.jpg"],
+    ["img/productividad.jpg", "img/trabajo en equipo.jpg", "img/obsesion por el cliente.jpg"]
+];
 
-const OVERLAY_SHOW_MS    = 400;    // overlay rápido
-const OVERLAY_STAY_MS    = 1500;   // tiempo visible
-const FADE_IN_MS         = 800;
-
-const HERO_INTERVAL_MS   = 7000;   // 7 segundos carrusel
-
-const PREVENTIVE_REFRESH_MS = 3600000;
+/* ================= CONFIG ================= */
+const SWAP_INTERVAL_MS   = 20000;
+const PRELOAD_START_MS   = 14000;
+const PRELOAD_TIMEOUT_MS = 12000;
+const OVERLAY_DURATION   = 2200;
 
 /* ================= STATE ================= */
 let biIndex = 0;
-let slideIndex = 0;
 let activeFrame = "A";
-let heroTimer, preloadTimer, swapTimer;
 let isSwapping = false;
 let isPreloading = false;
-let retryCount = 0;
 let nextFrameReady = false;
+let preloadTimer, swapTimer;
 
 /* ================= ELEMENTS ================= */
 const frameA = document.getElementById("frameA");
 const frameB = document.getElementById("frameB");
 const overlay = document.getElementById("overlay");
-const track = document.getElementById("track");
 const subtitle = document.getElementById("subtitle");
+const imagesContainer = document.getElementById("images");
+const indicator = document.getElementById("indicator");
 const loading = document.getElementById("loading");
 
-/* ================= CAROUSEL ================= */
-function buildCarousel(set){
-    clearInterval(heroTimer);
-    track.innerHTML = "";
-    slideIndex = 0;
-
+/* ================= BUILD IMAGES (FIJAS) ================= */
+function buildImages(set){
+    imagesContainer.innerHTML = "";
     set.forEach((src, i) => {
-        const d = document.createElement("div");
-        d.className = "item" + (i === 0 ? " active" : "");
-        d.innerHTML = `<img src="${src}">`;
-        track.appendChild(d);
+        const card = document.createElement("div");
+        card.className = "img-card" + (i === 1 ? " center" : "");
+        card.innerHTML = `<img src="${src}" />`;
+        imagesContainer.appendChild(card);
     });
-
-    track.style.transform = "translateX(0)";
-    heroTimer = setInterval(rotateHero, HERO_INTERVAL_MS);
 }
 
-function rotateHero(){
-    const items = document.querySelectorAll(".item");
-    if (!items.length) return;
+/* ================= BUILD INDICATOR ================= */
+function buildIndicator(){
+    indicator.innerHTML = "";
+    links.forEach((_, i) => {
+        const dot = document.createElement("div");
+        dot.className = "dot" + (i === biIndex ? " active" : "");
+        indicator.appendChild(dot);
+    });
+}
 
-    items[slideIndex].classList.add("fading");
-
-    setTimeout(() => {
-        items[slideIndex].classList.remove("active","fading");
-        slideIndex = (slideIndex + 1) % items.length;
-        items[slideIndex].classList.add("active");
-
-        const offset = Math.max(0, slideIndex - 1) * 244;
-        track.style.transform = `translateX(-${offset}px)`;
-    }, 400);
+function updateIndicator(){
+    const dots = indicator.querySelectorAll(".dot");
+    dots.forEach((dot, i) => {
+        dot.classList.toggle("active", i === biIndex);
+    });
 }
 
 /* ================= HELPERS ================= */
@@ -300,12 +256,12 @@ function startPreload(){
     const nextIndex = (biIndex + 1) % links.length;
     const incoming = getIncomingFrame();
     let loaded = false;
-    let loadTimeout;
+    let timeout;
 
     const onLoad = () => {
         if (loaded) return;
         loaded = true;
-        clearTimeout(loadTimeout);
+        clearTimeout(timeout);
         incoming.removeEventListener("load", onLoad);
         nextFrameReady = true;
         isPreloading = false;
@@ -314,20 +270,12 @@ function startPreload(){
     incoming.addEventListener("load", onLoad);
     incoming.src = links[nextIndex];
 
-    loadTimeout = setTimeout(() => {
+    timeout = setTimeout(() => {
         if (loaded) return;
         loaded = true;
         incoming.removeEventListener("load", onLoad);
-
-        retryCount++;
-        if (retryCount < MAX_RETRIES) {
-            isPreloading = false;
-            setTimeout(startPreload, 2000);
-        } else {
-            nextFrameReady = false;
-            isPreloading = false;
-            retryCount = 0;
-        }
+        nextFrameReady = true;
+        isPreloading = false;
     }, PRELOAD_TIMEOUT_MS);
 }
 
@@ -339,13 +287,10 @@ function swapBI(){
         loading.style.display = "block";
         startPreload();
         setTimeout(() => {
+            loading.style.display = "none";
             if (nextFrameReady) executeSwap();
-            else {
-                biIndex = (biIndex + 1) % links.length;
-                loading.style.display = "none";
-                scheduleNextCycle();
-            }
-        }, 8000);
+            else scheduleNextCycle();
+        }, 5000);
         return;
     }
 
@@ -359,37 +304,28 @@ function executeSwap(){
     const incoming = getIncomingFrame();
     const outgoing = getOutgoingFrame();
 
-    // 1) Mostrar overlay con fade suave
+    // 1) Actualizar contenido y mostrar overlay
+    biIndex = (biIndex + 1) % links.length;
+    subtitle.textContent = subtitles[biIndex] || "";
+    buildImages(images[biIndex] || images[0]);
+    updateIndicator();
     overlay.classList.add("visible");
 
+    // 2) Swap frames mientras overlay está visible
     setTimeout(() => {
-        // 2) Actualizar contenido
-        biIndex = (biIndex + 1) % links.length;
-        subtitle.textContent = subtitles[biIndex] || "";
-        buildCarousel(images[biIndex] || images[0]);
+        incoming.classList.add("visible");
+        outgoing.classList.remove("visible");
+        activeFrame = activeFrame === "A" ? "B" : "A";
 
-        // 3) Mostrar nuevo frame
+        // 3) Cerrar overlay
         setTimeout(() => {
-            incoming.classList.add("visible");
+            overlay.classList.remove("visible");
+            nextFrameReady = false;
+            isSwapping = false;
+            scheduleNextCycle();
+        }, 700);
 
-            setTimeout(() => {
-                outgoing.classList.remove("visible");
-                activeFrame = activeFrame === "A" ? "B" : "A";
-
-                // 4) Cerrar overlay
-                setTimeout(() => {
-                    overlay.classList.remove("visible");
-                    nextFrameReady = false;
-                    retryCount = 0;
-                    isSwapping = false;
-                    scheduleNextCycle();
-                }, OVERLAY_STAY_MS);
-
-            }, FADE_IN_MS);
-
-        }, OVERLAY_SHOW_MS);
-
-    }, 300);
+    }, OVERLAY_DURATION);
 }
 
 /* ================= CYCLE ================= */
@@ -403,7 +339,8 @@ function scheduleNextCycle(){
 /* ================= INIT ================= */
 frameA.src = links[0];
 subtitle.textContent = subtitles[0];
-buildCarousel(images[0]);
+buildImages(images[0]);
+buildIndicator();
 
 frameA.addEventListener("load", () => {
     loading.style.display = "none";
@@ -412,17 +349,14 @@ frameA.addEventListener("load", () => {
 
 // Refresh preventivo cada hora
 setInterval(() => {
-    if (isSwapping) return;
-    getOutgoingFrame().src = links[biIndex];
-}, PREVENTIVE_REFRESH_MS);
+    if (!isSwapping) getOutgoingFrame().src = links[biIndex];
+}, 3600000);
 
-/* ================= ERROR RECOVERY ================= */
+// Recovery
 window.addEventListener("error", () => {
-    if (isSwapping) {
-        isSwapping = false;
-        loading.style.display = "none";
-        overlay.classList.remove("visible");
-    }
+    isSwapping = false;
+    loading.style.display = "none";
+    overlay.classList.remove("visible");
 });
 </script>
 
